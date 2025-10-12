@@ -1,0 +1,2741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudArcade PH - Game Anywhere, Anytime</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --neon-green: #00ff41;
+      --neon-blue: #00D9FF;
+      --dark-green: #00cc33;
+      --bg-black: #000000;
+      --card-bg: #0a0a0a;
+      --text-white: #ffffff;
+      --text-gray: #a0a0a0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--bg-black);
+      color: var(--text-white);
+      overflow-x: hidden;
+      line-height: 1.6;
+      width: 100%;
+      max-width: 100vw;
+    }
+    
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 15px 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+    }
+    
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--neon-green);
+      text-shadow: 0 0 20px var(--neon-green);
+      letter-spacing: 2px;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      color: var(--text-white);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--neon-green);
+    }
+    
+    /* Active nav link when scrolling */
+    .nav-links a.active {
+      color: var(--neon-green);
+      text-shadow: 0 0 10px var(--neon-green);
+    }
+    
+    /* Section scroll animation */
+    section {
+      transition: all 0.5s ease;
+    }
+    
+    section.active-section {
+      animation: sectionGlow 1s ease-in-out;
+    }
+    
+    @keyframes sectionGlow {
+      0%, 100% { 
+        box-shadow: inset 0 0 0 rgba(0, 255, 65, 0);
+      }
+      50% { 
+        box-shadow: inset 0 0 80px rgba(0, 255, 65, 0.15);
+      }
+    }
+    
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 30px 80px;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 255, 65, 0.1) 0%, transparent 50%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(90deg, transparent 0%, rgba(0, 255, 65, 0.03) 50%, transparent 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.05) 2px, rgba(0, 255, 65, 0.05) 4px);
+      
+    }
+    
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+    
+    .hero-content {
+      max-width: 1000px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 72px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      color: var(--neon-green);
+      text-shadow: 0 0 30px var(--neon-green), 0 0 60px var(--neon-green);
+      letter-spacing: 3px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { text-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-green); }
+      to { text-shadow: 0 0 30px var(--neon-green), 0 0 60px var(--neon-green), 0 0 80px var(--neon-green); }
+    }
+    
+    .hero-tagline {
+      font-size: 28px;
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: var(--text-white);
+    }
+    
+    .hero-subtitle {
+      font-size: 20px;
+      color: var(--text-gray);
+      margin-bottom: 40px;
+    }
+    
+    .video-placeholder {
+      width: 100%;
+      max-width: 800px;
+      height: 450px;
+      margin: 0 auto 40px;
+      background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(0, 255, 65, 0.05));
+      border: 2px solid var(--neon-green);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 15px;
+      box-shadow: 0 0 40px rgba(0, 255, 65, 0.3);
+    }
+    
+    .video-placeholder-icon {
+      font-size: 80px;
+      color: var(--neon-green);
+      filter: drop-shadow(0 0 20px var(--neon-green));
+    }
+    
+    .video-placeholder-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      color: var(--neon-green);
+      font-weight: 700;
+    }
+    
+    .download-section {
+      margin-top: 50px;
+    }
+    
+    .download-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: var(--neon-green);
+    }
+    
+    .download-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 35px;
+      background: linear-gradient(135deg, var(--neon-green), var(--dark-green));
+      color: var(--bg-black);
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 50px;
+      transition: all 0.3s;
+      box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+      border: 2px solid var(--neon-green);
+    }
+    
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 50px rgba(0, 255, 65, 0.8);
+    }
+    
+    .download-btn svg {
+      width: 28px;
+      height: 28px;
+    }
+    
+    /* Mission Section */
+    .mission {
+      padding: 100px 30px;
+      background: linear-gradient(180deg, transparent, rgba(0, 255, 65, 0.05), transparent);
+    }
+    
+    .mission-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .mission h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 30px;
+      color: var(--neon-green);
+      text-shadow: 0 0 20px var(--neon-green);
+    }
+    
+    .mission-text {
+      font-size: 22px;
+      line-height: 1.8;
+      color: var(--text-white);
+      margin-bottom: 30px;
+    }
+    
+    .mission-highlight {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--neon-green);
+      padding: 30px;
+      background: rgba(0, 255, 65, 0.1);
+      border: 2px solid var(--neon-green);
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+    }
+    
+    /* Requirements Section */
+    .requirements {
+      padding: 100px 30px;
+      background: var(--bg-black);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 15px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 60px;
+      color: var(--neon-green);
+      text-shadow: 0 0 20px var(--neon-green);
+    }
+    
+    .requirements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .requirement-card {
+      background: var(--card-bg);
+      padding: 40px 30px;
+      border-radius: 20px;
+      border: 2px solid rgba(0, 255, 65, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .requirement-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--neon-green);
+      box-shadow: 0 10px 40px rgba(0, 255, 65, 0.3);
+    }
+    
+    .requirement-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px var(--neon-green));
+    }
+    
+    .requirement-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: var(--neon-green);
+    }
+    
+    .requirement-card p {
+      color: var(--text-gray);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    
+    .requirement-detail {
+      background: rgba(0, 255, 65, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+      border-left: 3px solid var(--neon-green);
+      margin-top: 15px;
+    }
+    
+    .requirement-detail strong {
+      color: var(--neon-green);
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    /* Features Section */
+    .features {
+      padding: 100px 30px;
+      background: linear-gradient(180deg, transparent, rgba(0, 255, 65, 0.03), transparent);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    
+    .feature-card {
+      background: var(--card-bg);
+      padding: 40px 30px;
+      border-radius: 20px;
+      border: 2px solid rgba(0, 255, 65, 0.2);
+      transition: all 0.3s;
+      text-align: center;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--neon-green);
+      box-shadow: 0 10px 40px rgba(0, 255, 65, 0.3);
+    }
+    
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px var(--neon-green));
+    }
+    
+    .feature-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: var(--neon-green);
+    }
+    
+    .feature-card p {
+      color: var(--text-gray);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    /* How It Works */
+    .how-it-works {
+      padding: 100px 30px;
+      background: var(--bg-black);
+    }
+    
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+      margin-top: 60px;
+    }
+    
+    .step {
+      text-align: center;
+      position: relative;
+    }
+    
+    .step-number {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--neon-green), var(--dark-green));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--bg-black);
+      margin: 0 auto 25px;
+      box-shadow: 0 0 30px rgba(0, 255, 65, 0.6);
+    }
+    
+    .step h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: var(--neon-green);
+    }
+    
+    .step p {
+      color: var(--text-gray);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    .step-apps {
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(0, 255, 65, 0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(0, 255, 65, 0.2);
+    }
+    
+    .step-apps strong {
+      color: var(--neon-green);
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .step-apps ul {
+      list-style: none;
+      text-align: left;
+      color: var(--text-gray);
+      font-size: 14px;
+    }
+    
+    .step-apps li {
+      padding: 5px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .step-apps li::before {
+      content: '✓';
+      color: var(--neon-green);
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+    
+    /* Stats Section */
+    .stats {
+      padding: 80px 30px;
+      background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), transparent);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      text-align: center;
+    }
+    
+    .stat-item h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 56px;
+      font-weight: 900;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px var(--neon-green);
+    }
+    
+    .stat-item p {
+      font-size: 18px;
+      color: var(--text-gray);
+      font-weight: 600;
+    }
+    
+    /* Pricing Preview */
+    .pricing-preview {
+      padding: 100px 30px;
+      background: var(--bg-black);
+    }
+    
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+    
+    .pricing-card {
+      background: var(--card-bg);
+      padding: 40px 30px;
+      border-radius: 20px;
+      border: 2px solid rgba(0, 255, 65, 0.3);
+      text-align: center;
+      transition: all 0.3s;
+    }
+    
+    .pricing-card:hover {
+      transform: scale(1.05);
+      border-color: var(--neon-green);
+      box-shadow: 0 20px 60px rgba(0, 255, 65, 0.4);
+    }
+    
+    .pricing-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      color: var(--neon-green);
+      margin-bottom: 15px;
+    }
+    
+    .pricing-card .price {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--text-white);
+      margin-bottom: 10px;
+    }
+    
+    .pricing-card .hours {
+      font-size: 20px;
+      color: var(--text-gray);
+      margin-bottom: 25px;
+    }
+    
+    .per-hour-badge {
+      display: inline-block;
+      background: var(--neon-green);
+      color: var(--bg-black);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      padding: 15px 40px;
+      background: transparent;
+      color: var(--neon-green);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 50px;
+      border: 2px solid var(--neon-green);
+      transition: all 0.3s;
+    }
+    
+    .cta-btn:hover {
+      background: var(--neon-green);
+      color: var(--bg-black);
+      box-shadow: 0 0 30px var(--neon-green);
+    }
+    
+    .view-all-btn {
+      display: inline-block;
+      margin-top: 50px;
+      padding: 18px 50px;
+      background: linear-gradient(135deg, var(--neon-green), var(--dark-green));
+      color: var(--bg-black);
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 700;
+      border-radius: 50px;
+      transition: all 0.3s;
+      box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+    }
+    
+    .view-all-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 50px rgba(0, 255, 65, 0.8);
+    }
+    
+    /* Coming Soon Section */
+    .coming-soon {
+      padding: 100px 30px;
+      background: linear-gradient(135deg, rgba(0, 255, 65, 0.05), transparent);
+    }
+    
+    .coming-soon-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .coming-soon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+    
+    .coming-soon-card {
+      background: var(--card-bg);
+      padding: 40px 30px;
+      border-radius: 20px;
+      border: 2px dashed rgba(0, 255, 65, 0.3);
+      transition: all 0.3s;
+    }
+    
+    .coming-soon-card:hover {
+      border-color: var(--neon-green);
+      box-shadow: 0 10px 40px rgba(0, 255, 65, 0.2);
+    }
+    
+    .coming-soon-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+    
+    .coming-soon-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      color: var(--neon-green);
+      margin-bottom: 15px;
+    }
+    
+    .coming-soon-card p {
+      color: var(--text-gray);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    .coming-soon-badge {
+      display: inline-block;
+      background: rgba(0, 255, 65, 0.1);
+      color: var(--neon-green);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 15px;
+      border: 1px solid var(--neon-green);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--card-bg);
+      padding: 60px 30px 30px;
+      border-top: 2px solid rgba(0, 255, 65, 0.2);
+    }
+    
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .footer-section h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-green);
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    
+    .footer-section p,
+    .footer-section a {
+      color: var(--text-gray);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+    
+    .footer-section a:hover {
+      color: var(--neon-green);
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 255, 65, 0.1);
+      border: 1px solid var(--neon-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--neon-green);
+      transition: all 0.3s;
+    }
+    
+    .social-links a:hover {
+      background: var(--neon-green);
+      color: var(--bg-black);
+      box-shadow: 0 0 20px var(--neon-green);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(0, 255, 65, 0.1);
+      color: var(--text-gray);
+    }
+    
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--neon-green);
+      font-size: 28px;
+      cursor: pointer;
+    }
+    
+    .nav-links.mobile-active {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.98);
+      padding: 20px;
+      gap: 15px;
+      border-bottom: 2px solid var(--neon-green);
+      box-shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      
+      nav {
+        position: fixed;
+      }
+      
+      .nav-container {
+        padding: 0 15px;
+        position: relative;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .nav-links.mobile-active {
+        display: flex;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+        z-index: 1001;
+      }
+      
+      .hero {
+        padding: 100px 15px 60px;
+      }
+      
+      .hero h1 {
+        font-size: 36px;
+        letter-spacing: 1px;
+      }
+      
+      .hero-tagline {
+        font-size: 20px;
+      }
+      
+      .hero-subtitle {
+        font-size: 16px;
+        padding: 0 10px;
+      }
+      
+      .video-placeholder {
+        height: 200px;
+        margin: 0 10px 30px;
+        max-width: calc(100% - 20px);
+      }
+      
+      .video-placeholder-icon {
+        font-size: 40px;
+      }
+      
+      .video-placeholder-text {
+        font-size: 16px;
+        padding: 0 10px;
+      }
+      
+      .download-section {
+        padding: 0 10px;
+      }
+      
+      .download-buttons {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 10px;
+      }
+      
+      .download-btn {
+        width: 100%;
+        max-width: 100%;
+        font-size: 16px;
+        padding: 15px 25px;
+      }
+      
+      .section-title {
+        font-size: 28px;
+        padding: 0 15px;
+      }
+      
+      .mission {
+        padding: 80px 15px;
+      }
+      
+      .mission h2 {
+        font-size: 28px;
+      }
+      
+      .mission-text {
+        font-size: 16px;
+        padding: 0 10px;
+      }
+      
+      .mission-highlight {
+        font-size: 18px;
+        padding: 20px 15px;
+        margin: 0 10px;
+      }
+      
+      .requirements,
+      .features,
+      .how-it-works,
+      .pricing-preview,
+      .coming-soon,
+      .stats {
+        padding: 80px 15px;
+      }
+      
+      .features-grid,
+      .steps,
+      .pricing-cards,
+      .requirements-grid,
+      .coming-soon-grid,
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .feature-card,
+      .requirement-card,
+      .pricing-card,
+      .coming-soon-card {
+        margin: 0 5px;
+      }
+      
+      .step-apps {
+        margin: 15px 5px 0;
+      }
+      
+      .logo {
+        font-size: 20px;
+      }
+      
+      footer {
+        padding: 50px 15px 20px;
+      }
+      
+      .footer-content {
+        gap: 30px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+      
+      .section-title {
+        font-size: 24px;
+      }
+      
+      .mission h2 {
+        font-size: 24px;
+      }
+      
+      .download-btn {
+        font-size: 14px;
+        padding: 12px 20px;
+      }
+      
+      .pricing-card .price {
+        font-size: 36px;
+      }
+    }
+@keyframes bgPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .network-section {
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+ 
+
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--neon-blue);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      font-weight: 300;
+      text-shadow: 0 0 20px var(--neon-blue);
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .connection-container {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      margin: 0 auto;
+      background: rgba(10, 10, 10, 0.6);
+      border-radius: 24px;
+      border: 2px solid rgba(57, 255, 20, 0.3);
+      box-shadow: 
+        0 0 60px rgba(57, 255, 20, 0.2),
+        inset 0 0 60px rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .connection-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Video Stream Lines (Server to Device) - Green */
+    .connection-line-video {
+      stroke: var(--neon-green);
+      stroke-width: 2.5;
+      fill: none;
+      opacity: 0.8;
+      stroke-dasharray: 5, 5;
+    }
+
+    @keyframes dashFlow {
+      to { stroke-dashoffset: -10; }
+    }
+
+    /* Input Lines (Device to Server) - Blue */
+    .connection-line-input {
+      stroke: var(--neon-blue);
+      stroke-width: 1.5;
+      fill: none;
+      opacity: 0.6;
+    }
+
+    .data-pulse-video {
+      fill: var(--neon-green);
+      
+    }
+
+    .data-pulse-input {
+      fill: var(--neon-blue);
+    
+    }
+
+    /* Data Labels */
+    .data-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      pointer-events: none;
+    }
+
+    .label-video {
+      fill: var(--neon-green);
+      filter: drop-shadow(0 0 8px var(--neon-green));
+    }
+
+    .label-input {
+      fill: var(--neon-blue);
+      filter: drop-shadow(0 0 8px var(--neon-blue));
+    }
+
+    .devices-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 0;
+      z-index: 2;
+    }
+
+    .device {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .device:hover {
+      transform: scale(1.12);
+      z-index: 10;
+    }
+
+    .phone-device {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .tablet-device {
+      grid-column: 1;
+      grid-row: 3;
+    }
+
+    .server-center {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .laptop-device {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .pc-device {
+      grid-column: 3;
+      grid-row: 3;
+    }
+
+    .server-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .server-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--neon-green);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 
+        0 0 20px var(--neon-green),
+        0 0 40px var(--neon-green);
+      padding: 8px 20px;
+      border: 2px solid var(--neon-green);
+      border-radius: 8px;
+      background: rgba(57, 255, 20, 0.1);
+      box-shadow: 
+        0 0 30px rgba(57, 255, 20, 0.3),
+        inset 0 0 20px rgba(57, 255, 20, 0.1);
+    }
+
+    @keyframes serverTitlePulse {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 
+          0 0 30px rgba(57, 255, 20, 0.3),
+          inset 0 0 20px rgba(57, 255, 20, 0.1);
+      }
+      50% { 
+        transform: scale(1.05);
+        box-shadow: 
+          0 0 50px rgba(57, 255, 20, 0.6),
+          inset 0 0 30px rgba(57, 255, 20, 0.2);
+      }
+    }
+
+    .server-icon {
+      width: 90px;
+      height: 120px;
+      background: linear-gradient(135deg, var(--device-bg) 0%, #252525 100%);
+      border: 3px solid var(--neon-green);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 
+        0 0 40px var(--neon-green),
+        0 0 80px rgba(57, 255, 20, 0.4),
+        inset 0 0 30px rgba(57, 255, 20, 0.1);
+      position: relative;
+    }
+
+    .server-rack-unit {
+      width: 75%;
+      height: 18px;
+      background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
+      border: 1px solid var(--neon-green);
+      border-radius: 3px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 5px;
+      box-shadow: 
+        0 0 10px rgba(57, 255, 20, 0.3),
+        inset 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .server-rack-unit::before,
+    .server-rack-unit::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      box-shadow: 0 0 5px var(--neon-green);
+      animation: blink 1.5s infinite;
+    }
+
+    .server-rack-unit:nth-child(2)::after {
+      animation-delay: 0.5s;
+    }
+
+    .server-rack-unit:nth-child(3)::before {
+      animation-delay: 1s;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { 
+        box-shadow: 
+          0 0 40px var(--neon-green),
+          0 0 80px rgba(57, 255, 20, 0.4),
+          inset 0 0 30px rgba(57, 255, 20, 0.1);
+      }
+      50% { 
+        box-shadow: 
+          0 0 60px var(--neon-green),
+          0 0 120px rgba(57, 255, 20, 0.6),
+          inset 0 0 40px rgba(57, 255, 20, 0.2);
+      }
+    }
+
+    .device-screen {
+      width: 95px;
+      height: 55px;
+      background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+      border: 2.5px solid var(--neon-green);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      position: relative;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .device:hover .device-screen {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 30px var(--neon-blue);
+    }
+
+
+
+
+    .screen-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, #0a0a0a 0%, #000000 100%);
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .video-placeholder1 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 1;
+      border-radius: 8px;
+    }
+
+    .tablet-screen {
+      width: 90px;
+      height: 68px;
+      border-radius: 8px;
+    }
+
+    .tablet-screen::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      bottom: 8px;
+      top: auto;
+    }
+
+    .tablet-screen::after {
+      display: none;
+    }
+
+    .tablet-screen .screen-content {
+      border-radius: 6px;
+    }
+
+    .laptop-screen {
+      width: 95px;
+      height: 60px;
+      background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+      border: 2px solid var(--neon-green);
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .laptop-screen .screen-content {
+      border-radius: 2px 2px 0 0;
+    }
+
+    .device:hover .laptop-screen {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 30px var(--neon-blue);
+    }
+
+    .laptop-base {
+      width: 100px;
+      height: 8px;
+      background: linear-gradient(180deg, #252525 0%, var(--device-bg) 100%);
+      border: 2px solid var(--neon-green);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .device:hover .laptop-base {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 30px var(--neon-blue);
+    }
+
+    .pc-monitor {
+      width: 90px;
+      height: 60px;
+      background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+      border: 2px solid var(--neon-green);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pc-monitor .screen-content {
+      border-radius: 2px;
+    }
+
+    .device:hover .pc-monitor {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 30px var(--neon-blue);
+    }
+
+    .pc-base {
+      width: 35px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--device-bg) 0%, #252525 100%);
+      border: 2px solid var(--neon-green);
+      border-radius: 4px;
+      margin: 6px 0;
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .device:hover .pc-base {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 30px var(--neon-blue);
+    }
+
+    .pc-base::before {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 2px;
+      background: var(--neon-green);
+      top: 16px;
+      left: 11px;
+      box-shadow: 0 10px 0 var(--neon-green);
+    }
+
+    .pc-peripherals {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    .keyboard {
+      width: 50px;
+      height: 14px;
+      background: var(--device-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    }
+
+    .mouse {
+      width: 18px;
+      height: 14px;
+      background: var(--device-bg);
+      border: 1px solid var(--neon-green);
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    }
+
+    .device-label {
+      color: var(--neon-green);
+      font-size: 12px;
+      font-weight: 700;
+      text-shadow: 0 0 10px var(--neon-green);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .game-icon {
+      font-size: 22px;
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 36px;
+      }
+
+      .section-subtitle {
+        font-size: 14px;
+        letter-spacing: 5px;
+        margin-left: 5px;
+        margin-left: 5px;
+      }
+
+      .connection-container {
+        height: 800px;
+      }
+
+      .devices-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+      }
+
+      .phone-device {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .laptop-device {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      .server-center {
+        grid-column: 1 / 3;
+        grid-row: 2;
+      }
+
+      .tablet-device {
+        grid-column: 1;
+        grid-row: 3;
+      }
+
+      .pc-device {
+        grid-column: 2;
+        grid-row: 3;
+      }
+
+      .server-title {
+        font-size: 16px;
+        padding: 6px 16px;
+      }
+
+      .server-icon {
+        width: 85px;
+        height: 110px;
+      }
+
+      .server-rack-unit {
+        height: 16px;
+      }
+
+      .device-screen {
+        width: 85px;
+        height: 50px;
+      }
+
+      .tablet-screen {
+        width: 70px;
+        height: 53px;
+      }
+
+      .laptop-screen {
+        width: 85px;
+        height: 55px;
+      }
+
+      .laptop-base {
+        width: 88px;
+      }
+
+      .pc-monitor {
+        width: 80px;
+        height: 55px;
+      }
+
+      .device-label {
+        font-size: 11px;
+      }
+
+      .game-icon {
+        font-size: 20px;
+      }
+
+      .data-label {
+        font-size: 9px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section-title {
+        font-size: 28px;
+        letter-spacing: 2px;
+      }
+
+      .section-subtitle {
+        margin-top: 10px;
+        font-size: 12px;
+        letter-spacing: 3px;
+        margin-left: 5px;
+      }
+
+      .connection-container {
+        height: 700px;
+      }
+
+      .server-title {
+        font-size: 14px;
+        padding: 5px 12px;
+        letter-spacing: 2px;
+      }
+
+      .server-icon {
+        width: 75px;
+        height: 100px;
+      }
+
+      .server-rack-unit {
+        height: 14px;
+      }
+
+      .device-screen {
+        width: 75px;
+        height: 45px;
+      }
+
+      .tablet-screen {
+        width: 70px;
+        height: 53px;
+      }
+
+      .laptop-screen {
+        width: 75px;
+        height: 50px;
+      }
+
+      .laptop-base {
+        width: 80px;
+      }
+
+      .pc-monitor {
+        width: 70px;
+        height: 48px;
+      }
+
+      .pc-base {
+        width: 30px;
+        height: 40px;
+      }
+
+      .keyboard {
+        width: 45px;
+        height: 12px;
+      }
+
+      .mouse {
+        width: 16px;
+        height: 12px;
+      }
+
+      .device-label {
+        font-size: 10px;
+      }
+
+      .game-icon {
+        font-size: 18px;
+      }
+
+      .data-label {
+        font-size: 8px;
+      }
+    }
+    .mini-carousel-wrapper {
+            width: 100%;
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 0 15px;
+            
+        }
+
+        .mini-carousel-box {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+
+        .mini-carousel-view {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .mini-carousel-strip {
+            display: flex;
+            transition: transform 0.4s ease;
+        }
+
+        .mini-carousel-item {
+            min-width: 100%;
+            max-height: 100px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            min-height: 200px;
+        }
+
+        .mini-carousel-img {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .mini-img-placeholder {
+            width: 100%;
+            max-width: 800px;
+            max-height: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.05), rgba(0, 0, 0, 0.8));
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .mini-placeholder-symbol svg {
+            width: 30px;
+            height: 30px;
+            fill: #00ff41;
+            opacity: 0.6;
+        }
+
+        .mini-placeholder-label {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #00ff41;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+
+        .mini-slide-count {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            padding: 4px 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #00ff41;
+            border-radius: 4px;
+            z-index: 5;
+        }
+
+        .mini-fullscreen-toggle {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 4px 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            cursor: pointer;
+            border-radius: 4px;
+            z-index: 5;
+            transition: all 0.2s;
+        }
+
+        .mini-fullscreen-toggle:hover {
+            background: #00ff41;
+            color: #000;
+        }
+
+        .mini-carousel-box.mini-fullscreen-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            max-width: none;
+            margin: 0;
+            padding: 15px;
+            z-index: 9999;
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mini-carousel-box.mini-fullscreen-mode .mini-carousel-view {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .mini-carousel-box.mini-fullscreen-mode .mini-carousel-item {
+            min-height: auto;
+            height: 100%;
+        }
+
+        .mini-carousel-box.mini-fullscreen-mode .mini-carousel-img {
+            max-height: calc(100vh - 120px);
+        }
+
+        .mini-nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            gap: 10px;
+        }
+
+        .mini-nav-arrow {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 8px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            flex: 0 0 auto;
+        }
+
+        .mini-nav-arrow:hover {
+            background: #00ff41;
+            color: #000;
+        }
+
+        .mini-nav-arrow:active {
+            transform: scale(0.95);
+        }
+
+        .mini-dot-nav {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .mini-nav-dot {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #00ff41;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+        }
+
+        .mini-nav-dot.mini-dot-active {
+            background: #00ff41;
+            transform: scale(1.2);
+        }
+
+        .mini-nav-dot:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .mini-carousel-wrapper {
+                margin: 20px auto;
+            }
+
+            .mini-carousel-box {
+                padding: 12px;
+            }
+
+            .mini-carousel-item {
+                max-height: 100px;
+            }
+
+            .mini-nav-arrow {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+
+            .mini-nav-dot {
+                width: 7px;
+                height: 7px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mini-carousel-wrapper {
+                padding: 0 10px;
+            }
+
+            .mini-carousel-box {
+                padding: 10px;
+            }
+
+            .mini-nav-controls {
+                margin-top: 10px;
+                gap: 8px;
+            }
+
+            .mini-nav-arrow {
+                padding: 5px 10px;
+            }
+        }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">CLOUDARCADE PH</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#mission">Our Mission</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="1">
+    <div class="hero-content">
+      <h1>CLOUDARCADE PH</h1>
+      <p class="hero-tagline">Game Anywhere, Anytime</p>
+      <p class="hero-subtitle">Experience High-end games  on any device. No downloads. No expensive hardware. Just pure gaming.</p>
+      
+      <!-- Video Placeholder -->
+      
+            <video autoplay loop muted playsinline class="video-placeholder">
+              <source src="{{ url_for('serve_res', filename='ads.mp4') }}" type="video/mp4">
+            </video>
+     
+      <div class="mini-carousel-wrapper">
+        <h2>Screenshots</h2>
+        <div class="mini-carousel-box" id="miniCarouselBox">
+            <button class="mini-fullscreen-toggle" id="miniFullscreenBtn">⛶</button>
+
+            <div class="mini-carousel-view">
+                <div class="mini-carousel-strip" id="miniCarouselStrip">
+                    <!-- Slide 1 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                     <img src="{{ url_for('serve_res', filename='Desktop1.png') }}" alt="description" style="width: 100%; height: auto;"/>
+                        </div>
+                        <div class="mini-slide-count">1/5</div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                      <img src="{{ url_for('serve_res', filename='Desktop2.png') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 2</span>
+                        </div>
+                        <div class="mini-slide-count">2/5</div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                            <div class="mini-placeholder-symbol">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                </svg>
+                            </div>
+                             <img src="{{ url_for('serve_res', filename='Android1.jpg') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 3</span>
+                        </div>
+                        <div class="mini-slide-count">3/5</div>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                            <div class="mini-placeholder-symbol">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                </svg>
+                            </div>
+                             <img src="{{ url_for('serve_res', filename='Android2.jpg') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 4</span>
+                        </div>
+                        <div class="mini-slide-count">4/5</div>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                            <div class="mini-placeholder-symbol">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                </svg>
+                            </div>
+                             <img src="{{ url_for('serve_res', filename='bg1.png') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 5</span>
+                        </div>
+                        <div class="mini-slide-count">5/5</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mini-nav-controls">
+                <button class="mini-nav-arrow" id="miniPrevBtn">◄ PREV</button>
+                <div class="mini-dot-nav" id="miniDotNav"></div>
+                <button class="mini-nav-arrow" id="miniNextBtn">NEXT ►</button>
+            </div>
+        </div>
+    </div>
+      
+      <div class="download-section">
+        <h2 class="download-title">Download Our App Now</h2>
+        <div class="download-buttons">
+          <a href="https://drive.google.com/file/d/1OL1oEJT7WGXApEPmEfZ4hyheWWtpg9lj/view?usp=drive_link" class="download-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/>
+            </svg>
+            Download for Android
+          </a>
+          <a href="https://drive.google.com/file/d/1vMn6UcITyqN2Qp0DpbM4gqRuQOwPO3SM/view?usp=drive_link" class="download-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+            </svg>
+            Download for Windows
+          </a>
+          <a href="#" class="download-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+               <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+            </svg>
+            Download for Mac (Coming Soon)
+          </a>
+                    <a href="#" class="download-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+               <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+            </svg>
+            Download for IOS (Coming Soon)
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="mission" id="mission">
+    <div class="mission-content">
+      <h2>Our Mission</h2>
+      <p class="mission-text">
+        We will turn your old laptop, PC, or even your Android device into a powerful gaming machine! Our goal is to make high-graphics games accessible to everyone without spending thousands of pesos.
+      </p>
+      <div class="mission-highlight">
+        Transforming your PC or low-end PC and Laptop and Android into a gaming beast thru Our Cloud Gaming Solution.
+      </div>
+    </div>
+  </section>
+
+  <section class="network-section">
+    <div class="section-header">
+      <h1 class="section-title">How The Magic Works</h1>
+      <p class="section-subtitle" style="padding: 20PX;
+      margin-top: -60px">
+        Think of it like watching a live video on Facebook. When someone moves, you see it 
+        instantly on your screen. CloudArcade works the same
+         way, but instead of a person, it streams the screen of our powerful gaming servers. 
+
+         <br>
+         <br>
+        Every movement in the game shows up in real time on your device, and you can 
+        control the game as if you were sitting on a gaming pc yourself.
+      </p>
+    </div>
+
+    <div class="connection-container">
+      <svg class="connection-lines">
+        <!-- Video Stream Lines (Server to Devices) - Green -->
+        <path class="connection-line-video line-phone-video" d=""/>
+        <circle class="data-pulse-video pulse-phone-video" r="6">
+          <animateMotion dur="10s" repeatCount="indefinite">
+            <mpath href="#path-phone-video"/>
+          </animateMotion>
+        </circle>
+        <path id="path-phone-video" d=""/>
+        <text class="data-label label-video label-phone-video">
+          <textPath href="#path-phone-video" startOffset="60%" text-anchor="middle">VIDEO OUTPUT</textPath>
+        </text>
+       
+        <path class="connection-line-video line-tablet-video" d=""/>
+        <circle class="data-pulse-video pulse-tablet-video" r="6">
+          <animateMotion dur="10s" repeatCount="indefinite" begin="5s">
+            <mpath href="#path-tablet-video"/>
+          </animateMotion>
+        </circle>
+        <path id="path-tablet-video" d=""/>
+        <text class="data-label label-video label-tablet-video">
+          <textPath href="#path-tablet-video" startOffset="50%" text-anchor="middle">VIDEO OUTPUT</textPath>
+        </text>
+       
+        <path class="connection-line-video line-laptop-video" d=""/>
+        <circle class="data-pulse-video pulse-laptop-video" r="6">
+          <animateMotion dur="10s" repeatCount="indefinite" begin="0.6s">
+            <mpath href="#path-laptop-video"/>
+          </animateMotion>
+        </circle>
+        <path id="path-laptop-video" d=""/>
+        <text class="data-label label-video label-laptop-video">
+          <textPath href="#path-laptop-video" startOffset="50%" text-anchor="middle">VIDEO OUTPUT</textPath>
+        </text>
+       
+        <path class="connection-line-video line-pc-video" d=""/>
+        <circle class="data-pulse-video pulse-pc-video" r="6">
+          <animateMotion dur="10s" repeatCount="indefinite" begin="0.9s">
+            <mpath href="#path-pc-video"/>
+          </animateMotion>
+        </circle>
+        <path id="path-pc-video" d=""/>
+        <text class="data-label label-video label-pc-video">
+          <textPath href="#path-pc-video" startOffset="50%" text-anchor="middle">VIDEO OUTPUT</textPath>
+        </text>
+
+        <!-- Input Lines (Devices to Server) - Blue -->
+        <path class="connection-line-input line-phone-input" d=""/>
+        <circle class="data-pulse-input pulse-phone-input" r="4">
+          <animateMotion dur="10s" repeatCount="indefinite">
+            <mpath href="#path-phone-input"/>
+          </animateMotion>
+        </circle>
+        <path id="path-phone-input" d=""/>
+        <text class="data-label label-input label-phone-input">
+          <textPath href="#path-phone-input" startOffset="40%" text-anchor="middle">CONTROLS INPUT</textPath>
+        </text>
+       
+        <path class="connection-line-input line-tablet-input" d=""/>
+        <circle class="data-pulse-input pulse-tablet-input" r="4">
+          <animateMotion dur="10s" repeatCount="indefinite" begin="0.4s">
+            <mpath href="#path-tablet-input"/>
+          </animateMotion>
+        </circle>
+        <path id="path-tablet-input" d=""/>
+        <text class="data-label label-input label-tablet-input">
+          <textPath href="#path-tablet-input" startOffset="50%" text-anchor="middle">CONTROLS INPUT</textPath>
+        </text>
+       
+        <path class="connection-line-input line-laptop-input" d=""/>
+        <circle class="data-pulse-input pulse-laptop-input" r="4">
+          <animateMotion dur="10s" repeatCount="indefinite" begin="0.8s">
+            <mpath href="#path-laptop-input"/>
+          </animateMotion>
+        </circle>
+        <path id="path-laptop-input" d=""/>
+        <text class="data-label label-input label-laptop-input">
+          <textPath href="#path-laptop-input" startOffset="50%" text-anchor="middle">CONTROLS INPUT</textPath>
+        </text>
+       
+        <path class="connection-line-input line-pc-input" d=""/>
+        <circle class="data-pulse-input pulse-pc-input" r="4">
+          <animateMotion dur="10s" repeatCount="indefinite" begin="1.2s">
+            <mpath href="#path-pc-input"/>
+          </animateMotion>
+        </circle>
+        <path id="path-pc-input" d=""/>
+        <text class="data-label label-input label-pc-input">
+          <textPath href="#path-pc-input" startOffset="50%" text-anchor="middle">CONTROLS INPUT</textPath>
+        </text>
+      </svg>
+     
+      <div class="devices-grid">
+        <div class="device phone-device">
+          <div class="device-screen">
+            <div class="screen-content">
+            <video autoplay loop muted playsinline>
+              <source src="{{ url_for('serve_res', filename='myko.mp4') }}" type="video/mp4">
+            </video>
+
+            </div>
+          </div>
+          <div class="device-label">Phone</div>
+        </div>
+
+        <div class="device tablet-device">
+          <div class="device-screen tablet-screen">
+            <div class="screen-content">
+            <video autoplay loop muted playsinline>
+              <source src="{{ url_for('serve_res', filename='myko4.mp4') }}" type="video/mp4">
+            </video>
+            </div>
+          </div>
+          <div class="device-label">Tablet</div>
+        </div>
+
+        <div class="device server-center">
+          <div class="server-wrapper">
+            <div class="server-title">CloudArcade Server</div>
+            <div class="server-icon">
+              <div class="server-rack-unit"></div>
+              <div class="server-rack-unit"></div>
+              <div class="server-rack-unit"></div>
+              <div class="server-rack-unit"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="device laptop-device">
+          <div class="laptop-screen">
+            <div class="screen-content">
+            <video autoplay loop muted playsinline>
+              <source src="{{ url_for('serve_res', filename='myko2.mp4') }}" type="video/mp4">
+            </video>
+            </div>
+          </div>
+          <div class="laptop-base"></div>
+          <div class="device-label">Laptop</div>
+        </div>
+
+        <div class="device pc-device">
+          <div class="pc-monitor">
+            <div class="screen-content">
+            <video autoplay loop muted playsinline>
+              <source src="{{ url_for('serve_res', filename='myko3.mp4') }}" type="video/mp4">
+            </video>
+            </div>
+          </div>
+          <div class="pc-base"></div>
+          <div class="pc-peripherals">
+            <div class="keyboard"></div>
+            <div class="mouse"></div>
+          </div>
+          <div class="device-label">Desktop PC</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Requirements Section -->
+  <section class="requirements" id="requirements">
+    <div class="container">
+      <h2 class="section-title">What You Need to Get Started</h2>
+      <div class="requirements-grid">
+        <div class="requirement-card">
+          <div class="requirement-icon">🌐</div>
+          <h3>Stable Internet Connection</h3>
+          <p>A reliable internet connection is essential for smooth cloud gaming experience.</p>
+          <div class="requirement-detail">
+            <strong>Why it's important:</strong>
+            <p>Since all games run on our powerful servers, your internet connection acts as the bridge. A stable connection ensures lag-free gameplay, crisp graphics, and instant response to your controls. We stream the game to your device in real-time, just like watching a video - but you're in control!</p>
+          </div>
+          <div class="requirement-detail" style="margin-top: 15px;">
+            <strong>Recommended:</strong>
+            <p>• Minimum 10 Mbps download speed<br>
+            • Stable WiFi or wired connection<br>
+            • Low latency for best experience</p>
+          </div>
+        </div>
+
+        <div class="requirement-card">
+          <div class="requirement-icon">📱</div>
+          <h3>CloudArcade App</h3>
+          <p>Download our specially optimized CloudArcade app for your device. <a href="/installguide">Installation Guide Video</a></p>
+          <div class="requirement-detail">
+            <strong>Available for:</strong>
+            <p>• Android devices (phones & tablets)<br>
+            • Windows PC & Laptops<br>
+            • Easy installation process<br>
+            • Regular updates with new features</p>
+          </div>
+          <div class="requirement-detail" style="margin-top: 15px;">
+            <strong>What it does:</strong>
+            <p>Our CloudArcade app is optimized to deliver the best streaming quality, minimal latency, and seamless controls. It's designed specifically for cloud gaming performance!  </p>
+          </div>
+        </div>
+
+        <div class="requirement-card">
+          <div class="requirement-icon">🔗</div>
+          <h3>ZeroTier Network App</h3>
+          <p>A secure third-party networking tool to connect you to our gaming servers. <a href="/installguide">Installation Guide Video</a></p>
+          <div class="requirement-detail">
+            <strong>Why ZeroTier:</strong>
+            <p>ZeroTier creates a secure, virtual network connection between your device and our servers. Think of it as a private gaming tunnel that ensures your connection is stable and secure.</p>
+          </div>
+          <div class="requirement-detail" style="margin-top: 15px;">
+            <strong>Easy Setup:</strong>
+            <p>• Free to download<br>
+            • Simple one-time setup<br>
+            • Runs in the background<br>
+            • We'll provide step-by-step instructions</p>
+          </div>
+          <div class="requirement-detail" style="margin-top: 15px;">
+            <strong>Future Plans:</strong>
+            <p>As we grow, we're investing in dedicated static IP infrastructure to provide even better, more direct connections to our servers!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features" style="display: none;">
+    <div class="container">
+      <h2 class="section-title">Why Choose CloudArcade PH?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Instant Play</h3>
+          <p>No downloads, no installations. Start gaming in seconds with our cloud technology.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎮</div>
+          <h3>Huge Game Library</h3>
+          <p>Access hundreds of AAA titles and indie games. New games added regularly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Affordable Pricing</h3>
+          <p>Multiple PIN tiers to fit your budget. Pay only for what you need - starting at just ₱20/hour!</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Cross-Platform</h3>
+          <p>Play on Android, Windows, tablets, or any device with internet connection.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>High Performance</h3>
+          <p>Smooth 60 FPS gaming experience on any device. No lag, no stuttering.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💻</div>
+          <h3>No Gaming PC Needed</h3>
+          <p>Play the latest AAA games even on low-end devices. We handle the heavy lifting with our powerful servers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Download Required Apps</h3>
+          <p>Get the CloudArcade PH app and ZeroTier network app for your device. Both are quick and easy to install. <a href="/installguide">Installation Guide</a></p>
+          <div class="step-apps">
+            <strong>Required Downloads:</strong>
+            <ul>
+              <li>CloudArcade App (Android/Windows)</li>
+              <li>ZeroTier App (for secure connection)</li>
+              <li>Follow our setup guide for easy installation</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Purchase a PIN</h3>
+          <p>Choose a gaming PIN tier that fits your needs and budget. We offer flexible options from 1 hour to 225 hours of gaming time.<a href="installguide"> How to Buy and Play</a></p>
+          <div class="step-apps">
+            <strong>Pricing Options:</strong>
+            <ul>
+              <li>Per Hour - ₱20 for on-demand gaming</li>
+              <li>Multiple tiers with bonus hours</li>
+              <li>Best value packages available</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Connect & Play</h3>
+          <p>Connect to our servers through the apps, browse our game library, and start playing instantly. No waiting, no downloads!</p>
+          <div class="step-apps">
+            <strong>What You Get:</strong>
+            <ul>
+              <li>Instant access to all games</li>
+              <li>60 FPS smooth gameplay</li>
+              <li>High-quality graphics streaming</li>
+              <li>24/7 gaming availability</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats" style="display:none;">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <h2>100+</h2>
+          <p>Active Gamers</p>
+        </div>
+        <div class="stat-item">
+          <h2>50+</h2>
+          <p>Games Available</p>
+        </div>
+        <div class="stat-item">
+          <h2>5,000+</h2>
+          <p>Hours Played</p>
+        </div>
+        <div class="stat-item">
+          <h2>24/7</h2>
+          <p>Support Available</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Preview -->
+  <section class="pricing-preview" id="pricing">
+    <div class="container">
+      <h2 class="section-title">Flexible Pricing Plans</h2>
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <h3>Per Hour</h3>
+          <div class="price">₱20</div>
+          <p class="hours">Pay As You Play</p>
+          <div class="per-hour-badge">Most Flexible</div>
+          <a href="https://www.facebook.com/profile.php?id=61578217256126" class="cta-btn">Start Gaming</a>
+        </div>
+        <div class="pricing-card">
+          <h3>Starter</h3>
+          <div class="price">₱99</div>
+          <p class="hours">5 Hours Gaming</p>
+          <div class="per-hour-badge">₱19.80/hour</div>
+          <a href="https://www.facebook.com/profile.php?id=61578217256126" class="cta-btn">Get Started</a>
+        </div>
+        <div class="pricing-card">
+          <h3>Premium</h3>
+          <div class="price">₱719</div>
+          <p class="hours">45 Hours Gaming</p>
+          <div class="per-hour-badge">₱15.98/hour</div>
+          <a href="https://www.facebook.com/profile.php?id=61578217256126" class="cta-btn">Most Popular</a>
+        </div>
+        <div class="pricing-card">
+          <h3>Legendary</h3>
+          <div class="price">₱3,199</div>
+          <p class="hours">225 Hours Gaming</p>
+          <div class="per-hour-badge">₱14.22/hour - Best Value!</div>
+          <a href="https://www.facebook.com/profile.php?id=61578217256126" class="cta-btn">Maximum Savings</a>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <a href="/tier" class="view-all-btn">View All Pricing Plans & Details</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coming Soon Section -->
+  <section class="coming-soon" style="display: none;">
+    <div class="container">
+      <h2 class="section-title">Future Developments</h2>
+      <p style="text-align: center; color: var(--text-gray); font-size: 18px; margin-bottom: 20px;">
+        We're constantly improving! Here's what's coming to CloudArcade PH:
+      </p>
+      <div class="coming-soon-grid">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">🌐</div>
+          <h3>Dedicated Static IP</h3>
+          <p>We're investing in dedicated static IP infrastructure for even faster, more reliable connections directly to our servers. This means lower latency and better gaming performance!</p>
+          <span class="coming-soon-badge">In Development</span>
+        </div>
+        
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">📱</div>
+          <h3>iOS App Support</h3>
+          <p>CloudArcade coming to iPhone and iPad! Play your favorite games on Apple devices with the same high-quality experience.</p>
+          <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+        
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">🎯</div>
+          <h3>More Game Servers</h3>
+          <p>Expanding our server infrastructure across the Philippines for better regional coverage and reduced ping times. More servers = better experience for everyone!</p>
+          <span class="coming-soon-badge">Planned 2025</span>
+        </div>
+        
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">🏆</div>
+          <h3>Tournament Platform</h3>
+          <p>Compete with other CloudArcade gamers in organized tournaments and events. Win prizes and show off your skills!</p>
+          <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+        
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">👥</div>
+          <h3>Social Features</h3>
+          <p>Friend lists, party chat, game invites, and more social features to game with your friends seamlessly.</p>
+          <span class="coming-soon-badge">In Development</span>
+        </div>
+        
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">🎮</div>
+          <h3>VR Game Support</h3>
+          <p>Experience virtual reality gaming through the cloud! Stream VR games to compatible headsets without expensive gaming PCs.</p>
+          <span class="coming-soon-badge">Future Plans</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>CloudArcade PH</h3>
+          <p>Your ultimate cloud gaming destination. Play anywhere, anytime. Transform any device into a gaming powerhouse.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=61578217256126" title="Facebook">f</a>
+            <a href="#" title="Twitter">𝕏</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="Discord">💬</a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <a href="#">About Us</a>
+          <a href="#">Games Library</a>
+          <a href="#">Pricing Plans</a>
+          <a href="#">FAQ & Help</a>
+          <a href="#">Download Apps</a>
+        </div>
+        <div class="footer-section">
+          <h3>Support</h3>
+          <a href="#">Help Center</a>
+          <a href="#">Setup Guide</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>📧 cloudarcadeph@gmail.com</p>
+          <p>📱 +63 906 067 1749</p>
+          <p>🕐 24/7 Support Available</p>
+          <p>📍 Philippines</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 CloudArcade PH. All rights reserved. | Made with ❤️ for Filipino Gamers</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll and active navigation highlighting
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+      
+      // Intersection Observer for scroll-triggered animations
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -20% 0px',
+        threshold: 0.3
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Add glow effect to section
+            entry.target.classList.add('active-section');
+            
+            // Update navigation active state
+            const sectionId = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+              }
+            });
+            
+            // Remove glow after animation
+            setTimeout(() => {
+              entry.target.classList.remove('active-section');
+            }, 1000);
+          }
+        });
+      }, observerOptions);
+      
+      // Observe all sections
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+      
+      // Smooth scroll for nav links
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetSection = document.querySelector(targetId);
+          
+          if (targetSection) {
+            targetSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+      
+      // Mobile menu toggle (basic implementation)
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const navLinksContainer = document.querySelector('.nav-links');
+      
+      if (mobileMenuBtn && navLinksContainer) {
+        mobileMenuBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          navLinksContainer.classList.toggle('mobile-active');
+          // Change icon
+          if (navLinksContainer.classList.contains('mobile-active')) {
+            mobileMenuBtn.textContent = '✕';
+          } else {
+            mobileMenuBtn.textContent = '☰';
+          }
+        });
+        
+        // Close menu when clicking on a link
+        const mobileLinks = navLinksContainer.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            navLinksContainer.classList.remove('mobile-active');
+            mobileMenuBtn.textContent = '☰';
+          });
+        });
+      }
+    });
+  </script>
+ <script>
+    function getCenter(element) {
+      const rect = element.getBoundingClientRect();
+      const container = document.querySelector('.connection-container').getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2 - container.left,
+        y: rect.top + rect.height / 2 - container.top
+      };
+    }
+
+    function drawLines() {
+      const server = getCenter(document.querySelector('.server-center'));
+      const phone = getCenter(document.querySelector('.phone-device'));
+      const tablet = getCenter(document.querySelector('.tablet-device'));
+      const laptop = getCenter(document.querySelector('.laptop-device'));
+      const pc = getCenter(document.querySelector('.pc-device'));
+
+      const createPath = (start, end, offset = 0) => {
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const curve = distance * 0.25;
+        
+        const midX = (start.x + end.x) / 2;
+        const midY = (start.y + end.y) / 2;
+        
+        const perpX = -dy / distance;
+        const perpY = dx / distance;
+        
+        const ctrlX = midX + perpX * (curve + offset);
+        const ctrlY = midY + perpY * (curve + offset);
+        
+        return `M ${start.x} ${start.y} Q ${ctrlX} ${ctrlY} ${end.x} ${end.y}`;
+      };
+
+      // Video streams (Server to Devices)
+      const phoneVideoPath = createPath(server, phone, -15);
+      document.querySelector('.line-phone-video').setAttribute('d', phoneVideoPath);
+      document.querySelector('#path-phone-video').setAttribute('d', phoneVideoPath);
+      
+      const tabletVideoPath = createPath(server, tablet, -15);
+      document.querySelector('.line-tablet-video').setAttribute('d', tabletVideoPath);
+      document.querySelector('#path-tablet-video').setAttribute('d', tabletVideoPath);
+      
+      const laptopVideoPath = createPath(server, laptop, -15);
+      document.querySelector('.line-laptop-video').setAttribute('d', laptopVideoPath);
+      document.querySelector('#path-laptop-video').setAttribute('d', laptopVideoPath);
+      
+      const pcVideoPath = createPath(server, pc, -15);
+      document.querySelector('.line-pc-video').setAttribute('d', pcVideoPath);
+      document.querySelector('#path-pc-video').setAttribute('d', pcVideoPath);
+
+      // Input streams (Devices to Server)
+      const phoneInputPath = createPath(phone, server, 15);
+      document.querySelector('.line-phone-input').setAttribute('d', phoneInputPath);
+      document.querySelector('#path-phone-input').setAttribute('d', phoneInputPath);
+      
+      const tabletInputPath = createPath(tablet, server, 15);
+      document.querySelector('.line-tablet-input').setAttribute('d', tabletInputPath);
+      document.querySelector('#path-tablet-input').setAttribute('d', tabletInputPath);
+      
+      const laptopInputPath = createPath(laptop, server, 15);
+      document.querySelector('.line-laptop-input').setAttribute('d', laptopInputPath);
+      document.querySelector('#path-laptop-input').setAttribute('d', laptopInputPath);
+      
+      const pcInputPath = createPath(pc, server, 15);
+      document.querySelector('.line-pc-input').setAttribute('d', pcInputPath);
+      document.querySelector('#path-pc-input').setAttribute('d', pcInputPath);
+    }
+
+    window.addEventListener('load', drawLines);
+    window.addEventListener('resize', drawLines);
+  </script>
+  <script>
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.video-placeholder1').forEach(video => {
+        video.muted = true;
+        video.play().catch(e => console.log('Video play blocked:', e));
+    });
+});
+</script>
+<script>
+        const miniStrip = document.getElementById('miniCarouselStrip');
+        const miniPrevBtn = document.getElementById('miniPrevBtn');
+        const miniNextBtn = document.getElementById('miniNextBtn');
+        const miniDotNav = document.getElementById('miniDotNav');
+        const miniFullscreenBtn = document.getElementById('miniFullscreenBtn');
+        const miniCarouselBox = document.getElementById('miniCarouselBox');
+        const miniSlides = document.querySelectorAll('.mini-carousel-item');
+        
+        let miniCurrentIndex = 0;
+        let miniIsFullscreen = false;
+
+        // Create dots
+        miniSlides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('mini-nav-dot');
+            if (index === 0) dot.classList.add('mini-dot-active');
+            dot.addEventListener('click', () => miniGoToSlide(index));
+            miniDotNav.appendChild(dot);
+        });
+
+        const miniDots = document.querySelectorAll('.mini-nav-dot');
+
+        function miniUpdateCarousel() {
+            miniStrip.style.transform = `translateX(-${miniCurrentIndex * 100}%)`;
+            miniDots.forEach((dot, index) => {
+                dot.classList.toggle('mini-dot-active', index === miniCurrentIndex);
+            });
+        }
+
+        function miniGoToSlide(index) {
+            miniCurrentIndex = index;
+            miniUpdateCarousel();
+        }
+
+        function miniNextSlide() {
+            miniCurrentIndex = (miniCurrentIndex + 1) % miniSlides.length;
+            miniUpdateCarousel();
+        }
+
+        function miniPrevSlide() {
+            miniCurrentIndex = (miniCurrentIndex - 1 + miniSlides.length) % miniSlides.length;
+            miniUpdateCarousel();
+        }
+
+        function miniToggleFullscreen() {
+            miniIsFullscreen = !miniIsFullscreen;
+            if (miniIsFullscreen) {
+                miniCarouselBox.classList.add('mini-fullscreen-mode');
+                miniFullscreenBtn.textContent = '⊗';
+            } else {
+                miniCarouselBox.classList.remove('mini-fullscreen-mode');
+                miniFullscreenBtn.textContent = '⛶';
+            }
+        }
+
+        miniPrevBtn.addEventListener('click', miniPrevSlide);
+        miniNextBtn.addEventListener('click', miniNextSlide);
+        miniFullscreenBtn.addEventListener('click', miniToggleFullscreen);
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') miniPrevSlide();
+            else if (e.key === 'ArrowRight') miniNextSlide();
+            else if (e.key === 'Escape' && miniIsFullscreen) miniToggleFullscreen();
+            else if ((e.key === 'f' || e.key === 'F') && miniIsFullscreen) miniToggleFullscreen();
+        });
+
+        // Touch swipe
+        let miniTouchStartX = 0;
+        let miniTouchEndX = 0;
+
+        miniStrip.addEventListener('touchstart', (e) => {
+            miniTouchStartX = e.changedTouches[0].screenX;
+        });
+
+        miniStrip.addEventListener('touchend', (e) => {
+            miniTouchEndX = e.changedTouches[0].screenX;
+            if (miniTouchStartX - miniTouchEndX > 50) miniNextSlide();
+            if (miniTouchEndX - miniTouchStartX > 50) miniPrevSlide();
+        });
+
+   
+    </script>
+
+</body>
+</html>

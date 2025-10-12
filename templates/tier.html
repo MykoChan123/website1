@@ -1,0 +1,850 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CloudArcade PIN Tiers</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #000;
+      min-height: 100vh;
+      padding: 40px 20px;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .intro-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: fadeOut 1s ease-out 3s forwards;
+    }
+    
+    .intro-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 64px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00ff41, #00cc33);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      animation: titleFadeIn 2s ease-out forwards;
+      opacity: 0;
+      text-align: center;
+      padding: 0 20px;
+    }
+    
+    @keyframes titleFadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: containerFadeIn 1s ease-out 3.5s forwards;
+    }
+    
+    @keyframes containerFadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00ff41, #00cc33);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #888;
+      font-size: 18px;
+      margin-bottom: 50px;
+    }
+    
+    .navigation-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      gap: 30px;
+      margin-bottom: 40px;
+      margin-top: 30px;
+    }
+    
+    .tier-counter {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #00ff41;
+      text-shadow: 0 0 10px #00ff41;
+      text-align: center;
+    }
+    
+    .tiers {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-height: 600px;
+      perspective: 1000px;
+      touch-action: pan-y;
+    }
+    
+    .nav-btn {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #00ff41, #00cc33);
+      border: 3px solid #00ff41;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #000;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+      font-weight: 900;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      border: none;
+      outline: none;
+    }
+    
+    #prevBtn {
+      left: 20px;
+    }
+    
+    #nextBtn {
+      right: 20px;
+    }
+    
+    .nav-btn:hover {
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 0 40px rgba(0, 255, 65, 0.8);
+    }
+    
+    .nav-btn:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+    
+    .nav-btn {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    
+    .tier-card {
+      background: #0a0a0a;
+      border-radius: 20px;
+      padding: 30px 25px;
+      position: absolute;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid;
+      width: 350px;
+      max-width: 90vw;
+      opacity: 0;
+      transform: scale(0.8) translateX(0);
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    
+    .tier-card.active {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+      z-index: 10;
+      pointer-events: auto;
+      box-shadow: 0 30px 100px var(--glow-color);
+    }
+    
+    .tier-card.prev {
+      opacity: 0.3;
+      transform: scale(0.7) translateX(-200px) rotateY(45deg);
+      z-index: 5;
+    }
+    
+    .tier-card.next {
+      opacity: 0.3;
+      transform: scale(0.7) translateX(200px) rotateY(-45deg);
+      z-index: 5;
+    }
+    
+    .tier-card:hover {
+      transform: translateY(-5px) scale(1.02);
+    }
+    
+    .tier-card.active:hover {
+      transform: scale(1.05) translateX(0);
+    }
+    
+    .tier-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--glow-color), transparent);
+    }
+    
+    .tier-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background: var(--glow-color);
+      box-shadow: 0 0 20px var(--glow-color);
+    }
+    
+    .tier-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--glow-color);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px var(--glow-color);
+    }
+    
+    .tier-price {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+    
+    .tier-price small {
+      font-size: 18px;
+      color: #888;
+    }
+    
+    .price-per-hour {
+      font-size: 14px;
+      color: var(--glow-color);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    
+    .savings {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+    
+    .tier-hours {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .hours-main {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--glow-color);
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    .hours-label {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .bonus {
+      display: inline-block;
+      background: var(--glow-color);
+      color: #000;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+    
+    .tier-features {
+      list-style: none;
+      margin: 20px 0;
+    }
+    
+    .tier-features li {
+      padding: 8px 0;
+      color: #cbd5e0;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .tier-features li::before {
+      content: '✓';
+      color: var(--glow-color);
+      font-weight: 700;
+      font-size: 18px;
+    }
+    
+    .tier-validity {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .validity-label {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .validity-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--glow-color);
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    .tier-legendary {
+      --glow-color: #ffd700;
+      border-color: rgba(255, 215, 0, 0.6);
+      box-shadow: 0 20px 80px rgba(255, 215, 0, 0.5);
+    }
+    
+    .tier-legendary::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.15) 50%, transparent 70%);
+      transform: rotate(45deg);
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    .tier-legendary .tier-badge {
+      width: 60px;
+      height: 60px;
+      font-size: 30px;
+    }
+    
+    .tier-ultra {
+      --glow-color: #f59e0b;
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 15px 60px rgba(245, 158, 11, 0.4);
+    }
+    
+    .tier-premium {
+      --glow-color: #ec4899;
+      border-color: rgba(236, 72, 153, 0.3);
+      box-shadow: 0 12px 50px rgba(236, 72, 153, 0.3);
+    }
+    
+    .tier-standard {
+      --glow-color: #6b7280;
+      border-color: rgba(107, 114, 128, 0.3);
+      box-shadow: 0 10px 40px rgba(107, 114, 128, 0.2);
+      opacity: 0.85;
+    }
+    
+    .tier-basic {
+      --glow-color: #a855f7;
+      border-color: rgba(168, 85, 247, 0.3);
+      box-shadow: 0 10px 40px rgba(168, 85, 247, 0.2);
+    }
+    
+    .tier-starter {
+      --glow-color: #00d9ff;
+      border-color: rgba(0, 217, 255, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 217, 255, 0.2);
+    }
+    
+    .tier-budget {
+      --glow-color: #9ca3af;
+      border-color: rgba(156, 163, 175, 0.25);
+      box-shadow: 0 8px 30px rgba(156, 163, 175, 0.15);
+      opacity: 0.8;
+    }
+    
+    .best-value {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      padding: 5px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.5);
+    }
+    
+    .most-popular {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #000;
+      padding: 6px 22px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6);
+    }
+    
+    .recommended {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      padding: 5px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.5);
+    }
+    
+    .swipe-indicator {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #666;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    
+    .swipe-indicator::before,
+    .swipe-indicator::after {
+      content: '◄';
+      font-size: 12px;
+    }
+    
+    .swipe-indicator::after {
+      content: '►';
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 10px;
+      }
+      
+      .intro-title {
+        font-size: 36px;
+        letter-spacing: 4px;
+      }
+      
+      .tiers {
+        min-height: 700px;
+      }
+      
+      .tier-card {
+        width: 320px;
+      }
+      
+      .tier-card.prev,
+      .tier-card.next {
+        opacity: 0;
+        transform: scale(0.5) translateX(-300px);
+      }
+      
+      .nav-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+      }
+      
+      #prevBtn {
+        left: 10px;
+      }
+      
+      #nextBtn {
+        right: 10px;
+      }
+      
+      h1 {
+        font-size: 32px;
+      }
+      
+      .tier-card.active.tier-legendary,
+      .tier-card.active.tier-ultra {
+        transform: scale(1) translateX(0);
+      }
+      
+      .swipe-indicator {
+        display: flex;
+      }
+    }
+    
+    @media (min-width: 769px) {
+      .swipe-indicator {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="intro-screen">
+    <div class="intro-title">CloudArcade<br>PIN Tiers</div>
+  </div>
+
+  <div class="container">
+    <h1>CloudArcade PIN Tiers</h1>
+    <p class="subtitle">Message us in Facebook to buy!</p>
+    
+    <div class="navigation-container">
+      <div class="tier-counter">
+        <span id="currentTier">1</span> / <span id="totalTiers">7</span>
+      </div>
+    </div>
+    
+    <div class="tiers" id="tiersContainer">
+      <div class="tier-card tier-legendary">
+        <div class="tier-badge">👑</div>
+        <div class="tier-name" style="font-size: x-large;">Legendary</div>
+        <div class="tier-price">₱3,199</div>
+        <div class="price-per-hour">₱14.22/hour • Best Value!</div>
+        <div class="savings">SAVE ₱801 vs Premium</div>
+        <div class="tier-hours">
+          <div class="hours-main">200 Hours</div>
+          <div class="hours-label">Gameplay Time</div>
+          <div class="bonus">+25 Bonus Hours FREE</div>
+        </div>
+        <ul class="tier-features">
+          <li>FREE Keyboard & Mouse</li>
+          <li>FREE Gaming Headphone</li>
+          <li>FREE +25 Hours</li>
+          <li>225 total hours of gaming</li>
+          <li>Full year VIP access</li>
+          <li>Save ₱3.58/hour vs Basic</li>
+        </ul>
+        <div class="tier-validity">
+          <div class="validity-label">Valid For</div>
+          <div class="validity-value">365 Days</div>
+        </div>
+      </div>
+      
+      <div class="tier-card tier-ultra">
+        <div class="recommended">⭐ RECOMMENDED</div>
+        <div class="tier-badge">🔥</div>
+        <div class="tier-name">Ultra</div>
+        <div class="tier-price">₱1,599</div>
+        <div class="price-per-hour">₱14.54/hour</div>
+        <div class="savings">SAVE ₱321 vs Premium</div>
+        <div class="tier-hours">
+          <div class="hours-main">100 Hours</div>
+          <div class="hours-label">Gameplay Time</div>
+          <div class="bonus">+10 Bonus Hours FREE</div>
+        </div>
+        <ul class="tier-features">
+          <li>FREE Keyboard & Mouse</li>
+          <li>FREE +10 Hours</li>
+          <li>110 total hours of gaming</li>
+          <li>6-month gaming freedom</li>
+          <li>Maximum value for money</li>
+          <li>Save ₱3.26/hour vs Basic</li>
+        </ul>
+        <div class="tier-validity">
+          <div class="validity-label">Valid For</div>
+          <div class="validity-value">180 Days</div>
+        </div>
+      </div>
+      
+      <div class="tier-card tier-premium">
+        <div class="tier-badge">💎</div>
+        <div class="tier-name">Premium</div>
+        <div class="tier-price">₱719</div>
+        <div class="price-per-hour">₱15.98/hour</div>
+        <div class="savings">SAVE ₱81 vs Standard</div>
+        <div class="tier-hours">
+          <div class="hours-main">40 Hours</div>
+          <div class="hours-label">Gameplay Time</div>
+          <div class="bonus">+5 Bonus Hours FREE</div>
+        </div>
+        <ul class="tier-features">
+          <li>FREE +5 hours</li>
+          <li>45 total hours of gaming</li>
+          <li>3-month gaming freedom</li>
+          <li>Save ₱1.82/hour vs Basic</li>
+        </ul>
+        <div class="tier-validity">
+          <div class="validity-label">Valid For</div>
+          <div class="validity-value">90 Days</div>
+        </div>
+      </div>
+      
+      <div class="tier-card tier-standard">
+        <div class="tier-badge">⚙️</div>
+        <div class="tier-name">Standard</div>
+        <div class="tier-price">₱399</div>
+        <div class="price-per-hour">₱19.95/hour</div>
+        <div class="tier-hours">
+          <div class="hours-main">20 Hours</div>
+          <div class="hours-label">Gameplay Time</div>
+           <div class="bonus">+2 Bonus Hours</div>
+        </div>
+        <ul class="tier-features">
+          <li>FREE +2 Hours</li>
+          <li>Total of 22 hours of gaming</li>
+          <li>2-month validity</li>
+        </ul>
+        <div class="tier-validity">
+          <div class="validity-label">Valid For</div>
+          <div class="validity-value">60 Days</div>
+        </div>
+      </div>
+      
+      <div class="tier-card tier-basic">
+        <div class="tier-badge">⚡</div>
+        <div class="tier-name">Basic</div>
+        <div class="tier-price">₱284</div>
+        <div class="price-per-hour">₱17.80/hour</div>
+        <div class="tier-hours">
+          <div class="hours-main">15 Hours</div>
+          <div class="hours-label">Gameplay Time</div>
+          <div class="bonus">+2 Bonus Hours</div>
+        </div>
+        <ul class="tier-features">
+          <li>17 total hours of gaming</li>
+          <li>Extended validity period</li>
+          <li>Better value than Starter</li>
+        </ul>
+        <div class="tier-validity">
+          <div class="validity-label">Valid For</div>
+          <div class="validity-value">45 Days</div>
+        </div>
+      </div>
+      
+      <div class="tier-card tier-starter">
+        <div class="tier-badge">🎮</div>
+        <div class="tier-name">Starter</div>
+        <div class="tier-price">₱99</div>
+        <div class="price-per-hour">₱19.80/hour</div>
+        <div class="tier-hours">
+          <div class="hours-main">5 Hours</div>
+          <div class="hours-label">Gameplay Time</div>
+          <div class="bonus">+1 Bonus Hours</div>
+        </div>
+        <ul class="tier-features">
+          <li>FREE +1 Hours</li>
+          <li>Total of 6 Hours Gaming</li>
+          <li>Perfect for casual gaming</li>
+          <li>Try before you commit</li>
+          <li>Full game access</li>
+        </ul>
+        <div class="tier-validity">
+          <div class="validity-label">Valid For</div>
+          <div class="validity-value">30 Days</div>
+        </div>
+      </div>
+      
+      <div class="tier-card tier-budget">
+        <div class="tier-badge">💰</div>
+        <div class="tier-name">Budget</div>
+        <div class="tier-price">₱20</div>
+        <div class="tier-hours">
+          <div class="hours-main">1 Hour</div>
+          <div class="hours-label">Gameplay Time</div>
+        </div>
+        <ul class="tier-features">
+          <li>Budget-friendly option</li>
+          <li>Test the platform</li>
+          <li>Same quality gaming</li>
+        </ul>
+        <div class="tier-validity">
+          <div class="validity-label">Valid For</div>
+          <div class="validity-value">1 Day</div>
+        </div>
+      </div>
+      
+      <button class="nav-btn" id="prevBtn">◄</button>
+      <button class="nav-btn" id="nextBtn">►</button>
+      
+      <div class="swipe-indicator">Swipe to navigate</div>
+    </div>
+  </div>
+  
+  <script>
+    const tierCards = document.querySelectorAll('.tier-card');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const currentTierSpan = document.getElementById('currentTier');
+    const totalTiersSpan = document.getElementById('totalTiers');
+    const tiersContainer = document.getElementById('tiersContainer');
+    
+    let currentIndex = 0;
+    const totalTiers = tierCards.length;
+    
+    totalTiersSpan.textContent = totalTiers;
+    
+    function updateCarousel() {
+      tierCards.forEach((card, index) => {
+        card.classList.remove('active', 'prev', 'next');
+        
+        if (index === currentIndex) {
+          card.classList.add('active');
+        } else if (index === currentIndex - 1 || (currentIndex === 0 && index === totalTiers - 1)) {
+          card.classList.add('prev');
+        } else if (index === currentIndex + 1 || (currentIndex === totalTiers - 1 && index === 0)) {
+          card.classList.add('next');
+        }
+      });
+      
+      currentTierSpan.textContent = currentIndex + 1;
+      prevBtn.disabled = false;
+      nextBtn.disabled = false;
+    }
+    
+    function goToPrev() {
+      currentIndex = (currentIndex - 1 + totalTiers) % totalTiers;
+      updateCarousel();
+    }
+    
+    function goToNext() {
+      currentIndex = (currentIndex + 1) % totalTiers;
+      updateCarousel();
+    }
+    
+    prevBtn.addEventListener('click', goToPrev);
+    nextBtn.addEventListener('click', goToNext);
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        goToPrev();
+      } else if (e.key === 'ArrowRight') {
+        goToNext();
+      }
+    });
+    
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
+    const swipeThreshold = 50;
+    
+    tiersContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    
+    tiersContainer.addEventListener('touchmove', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    
+    tiersContainer.addEventListener('touchend', () => {
+      const diffX = touchStartX - touchEndX;
+      const diffY = touchStartY - touchEndY;
+      
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+        if (diffX > 0) {
+          goToNext();
+        } else {
+          goToPrev();
+        }
+      }
+    }, { passive: true });
+    
+    updateCarousel();
+  </script>
+</body>
+</html>

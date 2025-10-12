@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudArcade PH - Game Anywhere, Anytime</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --green: #00ff41;
+      --dark: #000;
+      --card: #0a0a0a;
+      --gray: #a0a0a0;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--dark);
+      color: #fff;
+      line-height: 1.6;
+    }
+    
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(0,0,0,0.95);
+      padding: 15px 20px;
+      z-index: 100;
+      border-bottom: 1px solid rgba(0,255,65,0.2);
+    }
+    
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: 2px;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    
+    .nav-links a:hover {
+      color: var(--green);
+    }
+    
+    .nav-links a.active {
+      color: var(--green);
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--green);
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    section {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+    
+    h2 {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--green);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    h3 {
+      font-size: 22px;
+      color: var(--green);
+      margin-bottom: 15px;
+    }
+    
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 20px 80px;
+    }
+    
+    .hero-tagline {
+      font-size: 24px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--gray);
+      margin-bottom: 40px;
+    }
+    
+    .video-box {
+      width: 100%;
+      max-width: 600px;
+      height: 350px;
+      margin: 30px auto;
+      background: rgba(0,255,65,0.05);
+      border: 2px solid var(--green);
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .video-icon {
+      font-size: 60px;
+    }
+    
+    .download-btns {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 30px;
+      background: var(--green);
+      color: var(--dark);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 30px;
+      border: 2px solid var(--green);
+    }
+    
+    .btn:active {
+      transform: scale(0.98);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--green);
+    }
+    
+    .btn-outline:hover {
+      background: var(--green);
+      color: var(--dark);
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+    
+    .card {
+      background: var(--card);
+      padding: 30px;
+      border-radius: 15px;
+      border: 2px solid rgba(0,255,65,0.2);
+    }
+    
+    .card:active {
+      border-color: var(--green);
+    }
+    
+    .icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+    
+    .detail-box {
+      background: rgba(0,255,65,0.05);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 3px solid var(--green);
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    
+    .detail-box strong {
+      color: var(--green);
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .step-num {
+      width: 60px;
+      height: 60px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--dark);
+      margin: 0 auto 20px;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 30px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    
+    .stat-num {
+      font-size: 40px;
+      font-weight: 900;
+      color: var(--green);
+      margin-bottom: 5px;
+    }
+    
+    .price {
+      font-size: 40px;
+      font-weight: 900;
+      margin: 15px 0;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: var(--green);
+      color: var(--dark);
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+    
+    .badge-outline {
+      background: rgba(0,255,65,0.1);
+      color: var(--green);
+      border: 1px solid var(--green);
+    }
+    
+    footer {
+      background: var(--card);
+      padding: 50px 20px 30px;
+      border-top: 2px solid rgba(0,255,65,0.2);
+    }
+    
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .footer-grid h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .footer-grid a {
+      color: var(--gray);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .footer-grid a:hover {
+      color: var(--green);
+    }
+    
+    .social {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .social a {
+      width: 35px;
+      height: 35px;
+      background: rgba(0,255,65,0.1);
+      border: 1px solid var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0,255,65,0.1);
+      color: var(--gray);
+      font-size: 14px;
+    }
+    
+    .device-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 30px;
+      margin: 40px 0;
+      text-align: center;
+    }
+    
+    .device-item {
+      padding: 20px;
+    }
+    
+    .device-icon {
+      font-size: 50px;
+      margin-bottom: 10px;
+    }
+    
+    ul {
+      list-style: none;
+      margin-top: 10px;
+    }
+    
+    li {
+      padding: 5px 0;
+      padding-left: 20px;
+      position: relative;
+      font-size: 14px;
+    }
+    
+    li::before {
+      content: '•';
+      color: var(--green);
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.98);
+        padding: 20px;
+        gap: 15px;
+        border-bottom: 2px solid var(--green);
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      h1 {
+        font-size: 32px;
+      }
+      
+      h2 {
+        font-size: 28px;
+      }
+      
+      .hero {
+        padding: 100px 15px 60px;
+      }
+      
+      .video-box {
+        height: 200px;
+      }
+      
+      .video-icon {
+        font-size: 40px;
+      }
+      
+      .download-btns {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      section {
+        padding: 60px 15px;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stat-num {
+        font-size: 32px;
+      }
+      
+      .price {
+        font-size: 32px;
+      }
+    }
+    .mini-carousel-wrapper {
+            width: 100%;
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 0 15px;
+            
+        }
+
+        .mini-carousel-box {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+
+        .mini-carousel-view {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .mini-carousel-strip {
+            display: flex;
+            transition: transform 0.4s ease;
+        }
+
+        .mini-carousel-item {
+            min-width: 100%;
+            max-height: 100px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            min-height: 200px;
+        }
+
+        .mini-carousel-img {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .mini-img-placeholder {
+            width: 100%;
+            max-width: 800px;
+            max-height: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.05), rgba(0, 0, 0, 0.8));
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .mini-placeholder-symbol svg {
+            width: 30px;
+            height: 30px;
+            fill: #00ff41;
+            opacity: 0.6;
+        }
+
+        .mini-placeholder-label {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #00ff41;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+
+        .mini-slide-count {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            padding: 4px 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #00ff41;
+            border-radius: 4px;
+            z-index: 5;
+        }
+
+        .mini-fullscreen-toggle {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 4px 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            cursor: pointer;
+            border-radius: 4px;
+            z-index: 5;
+            transition: all 0.2s;
+        }
+
+        .mini-fullscreen-toggle:hover {
+            background: #00ff41;
+            color: #000;
+        }
+
+        .mini-carousel-box.mini-fullscreen-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            max-width: none;
+            margin: 0;
+            padding: 15px;
+            z-index: 9999;
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mini-carousel-box.mini-fullscreen-mode .mini-carousel-view {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .mini-carousel-box.mini-fullscreen-mode .mini-carousel-item {
+            min-height: auto;
+            height: 100%;
+        }
+
+        .mini-carousel-box.mini-fullscreen-mode .mini-carousel-img {
+            max-height: calc(100vh - 120px);
+        }
+
+        .mini-nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            gap: 10px;
+        }
+
+        .mini-nav-arrow {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 8px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            flex: 0 0 auto;
+        }
+
+        .mini-nav-arrow:hover {
+            background: #00ff41;
+            color: #000;
+        }
+
+        .mini-nav-arrow:active {
+            transform: scale(0.95);
+        }
+
+        .mini-dot-nav {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .mini-nav-dot {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #00ff41;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+        }
+
+        .mini-nav-dot.mini-dot-active {
+            background: #00ff41;
+            transform: scale(1.2);
+        }
+
+        .mini-nav-dot:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .mini-carousel-wrapper {
+                margin: 20px auto;
+            }
+
+            .mini-carousel-box {
+                padding: 12px;
+            }
+
+            .mini-carousel-item {
+                max-height: 100px;
+            }
+
+            .mini-nav-arrow {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+
+            .mini-nav-dot {
+                width: 7px;
+                height: 7px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mini-carousel-wrapper {
+                padding: 0 10px;
+            }
+
+            .mini-carousel-box {
+                padding: 10px;
+            }
+
+            .mini-nav-controls {
+                margin-top: 10px;
+                gap: 8px;
+            }
+
+            .mini-nav-arrow {
+                padding: 5px 10px;
+            }
+        }
+        
+    .video-placeholder {
+      width: 100%;
+      height: 100%;
+     
+      background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(0, 255, 65, 0.05));
+      border: 2px solid var(--neon-green);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+
+      box-shadow: 0 0 40px rgba(0, 255, 65, 0.3);
+    }
+
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">CLOUDARCADE PH</div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#mission">Mission</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+        
+      </ul>
+      <button class="mobile-menu-btn" id="menuBtn">☰</button>
+    </div>
+  </nav>
+
+  <section class="hero" id="home">
+    <div>
+      <h1>CLOUDARCADE PH</h1>
+      <p class="hero-tagline">Game Anywhere, Anytime</p>
+      <p class="hero-subtitle">Experience High-end games on any device. No downloads. No expensive hardware. Just pure gaming.</p>
+      
+      <div class="video-box">
+            <video autoplay loop muted playsinline class="video-placeholder">
+              <source src="{{ url_for('serve_res', filename='ads.mp4') }}" type="video/mp4">
+            </video>
+      </div>
+      <div class="mini-carousel-wrapper">
+        <div class="mini-carousel-box" id="miniCarouselBox">
+            <button class="mini-fullscreen-toggle" id="miniFullscreenBtn">⛶</button>
+
+            <div class="mini-carousel-view">
+                <div class="mini-carousel-strip" id="miniCarouselStrip">
+                    <!-- Slide 1 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                            <div class="mini-placeholder-symbol">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                </svg>
+                            </div>
+                             <img src="{{ url_for('serve_res', filename='Android1.jpg') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 1</span>
+                        </div>
+                        <div class="mini-slide-count">1/5</div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                      <img src="{{ url_for('serve_res', filename='Android2.jpg') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 2</span>
+                        </div>
+                        <div class="mini-slide-count">2/5</div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                            <div class="mini-placeholder-symbol">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                </svg>
+                                
+                            </div>
+                             <img src="{{ url_for('serve_res', filename='Desktop1.png') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 3</span>
+                        </div>
+                        <div class="mini-slide-count">3/5</div>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                            <div class="mini-placeholder-symbol">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                </svg>
+                            </div>
+                             <img src="{{ url_for('serve_res', filename='Desktop2.png') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 4</span>
+                        </div>
+                        <div class="mini-slide-count">4/5</div>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="mini-carousel-item">
+                        <div class="mini-img-placeholder">
+                            <div class="mini-placeholder-symbol">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                                </svg>
+                            </div>
+                             <img src="{{ url_for('serve_res', filename='bg1.png') }}" alt="description" style="width: 100%; height: auto;"/>
+                            <span class="mini-placeholder-label">IMAGE 5</span>
+                        </div>
+                        <div class="mini-slide-count">5/5</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mini-nav-controls">
+                <button class="mini-nav-arrow" id="miniPrevBtn">◄ PREV</button>
+                <div class="mini-dot-nav" id="miniDotNav"></div>
+                <button class="mini-nav-arrow" id="miniNextBtn">NEXT ►</button>
+            </div>
+        </div>
+    </div>
+
+      
+      <div class="download-btns">
+        <a href="https://drive.google.com/file/d/1OL1oEJT7WGXApEPmEfZ4hyheWWtpg9lj/view?usp=drive_link" class="btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/>
+          </svg>
+          Download for Android
+        </a>
+        <a href="https://drive.google.com/file/d/1vMn6UcITyqN2Qp0DpbM4gqRuQOwPO3SM/view?usp=drive_link" class="btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+          </svg>
+          Download for Windows
+        </a>
+      </div>
+      
+      <div style="margin-top: 40px;">
+        <p style="color: var(--gray); font-size: 16px; margin-bottom: 20px; font-weight: 600;">Coming Soon:</p>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; border: 2px solid rgba(0,255,65,0.3); border-radius: 25px; background: rgba(0,255,65,0.05);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--green)">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            <span style="color: var(--green); font-size: 14px; font-weight: 600;">iOS</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; border: 2px solid rgba(0,255,65,0.3); border-radius: 25px; background: rgba(0,255,65,0.05);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--green)">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            <span style="color: var(--green); font-size: 14px; font-weight: 600;">macOS</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; border: 2px solid rgba(0,255,65,0.3); border-radius: 25px; background: rgba(0,255,65,0.05);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--green)">
+              <path d="M12.504 0c-.155 0-.315.008-.480.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.689.987-1.47 2.06-1.47 3.235 0 .47.166.92.475 1.29.907 1.078 2.904 1.579 4.734 1.579 1.855 0 3.288-.502 4.196-1.579.31-.37.476-.82.476-1.29 0-1.175-.782-2.248-1.47-3.235-.75-1.067-.975-1.928-1.05-3.02-.066-1.491 1.055-5.965-3.17-6.298-.166-.013-.326-.021-.481-.021zm-7.106 8.375c-.353 0-.676.028-.97.084-.543.102-.922.29-1.146.599-.23.32-.319.753-.243 1.265.152 1.021.657 2.037 1.527 2.984 1.012 1.102 2.444 2.038 4.084 2.685 1.64.648 3.391.99 5.122 1.03 1.73.04 3.365-.273 4.66-.95 1.29-.677 2.195-1.69 2.45-2.976.093-.471.044-.881-.135-1.184-.18-.303-.5-.526-.95-.654-.895-.26-2.124-.312-3.525-.208-1.401.103-2.943.365-4.453.76-1.51.393-3.008.93-4.293 1.568-.642.319-1.226.637-1.728.932-.502.294-.923.567-1.244.776-.32.209-.545.342-.726.396-.091.027-.169.044-.238.054-.069.01-.128.015-.181.018-.052.003-.099.004-.143.004zm14.216 0c-.044 0-.091-.001-.143-.004-.053-.003-.112-.008-.181-.018-.069-.01-.147-.027-.238-.054-.181-.054-.406-.187-.726-.396-.321-.209-.742-.482-1.244-.776-.502-.295-1.086-.613-1.728-.932-1.285-.638-2.783-1.175-4.293-1.568-1.51-.395-3.052-.657-4.453-.76-1.401-.104-2.63-.052-3.525.208-.45.128-.77.351-.95.654-.179.303-.228.713-.135 1.184.255 1.286 1.16 2.299 2.45 2.976 1.295.677 2.93.99 4.66.95 1.731-.04 3.482-.382 5.122-1.03 1.64-.647 3.072-1.583 4.084-2.685.87-.947 1.375-1.963 1.527-2.984.076-.512-.013-.945-.243-1.265-.224-.309-.603-.497-1.146-.599-.294-.056-.617-.084-.97-.084z"/>
+            </svg>
+            <span style="color: var(--green); font-size: 14px; font-weight: 600;">Linux</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mission">
+    <h2>Our Mission</h2>
+    <p style="text-align: center; font-size: 20px; margin-bottom: 20px;">
+     We will turn your old laptop, PC, or even your Android device into a powerful gaming machine! Our goal is to make high-graphics games accessible to everyone without spending thousands of pesos.
+      </p>
+    </p>
+    <div class="card" style="text-align: center; font-size: 22px; font-weight: 700; color: var(--green);">
+      Transforming your PC or low-end PC and Laptop and Android into a gaming beast thru Our Cloud Gaming Solution. 
+    </div>
+  </section>
+
+<section class="network-section">
+    <div class="section-header">
+      <h1 class="section-title" style="text-align: center;">How The Magic Works</h1>
+      <p class="section-subtitle" style="padding: 20PX;
+      margin-top: -60px; text-align: center; margin-top: 10px;">
+        Think of it like watching a live video on Facebook. When someone moves, you see it 
+        instantly on your screen. CloudArcade works the same
+         way, but instead of a person, it streams the screen of our powerful gaming servers. 
+
+         <br>
+         <br>
+        Every movement in the game shows up in real time on your device, and you can 
+        control the game as if you were sitting on a gaming pc yourself.
+      </p>
+    </div>
+
+  <section id="requirements">
+    <h2>What You Need</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">🌐</div>
+        <h3>Stable Internet</h3>
+        <p style="color: var(--gray);">10 Mbps or faster for smooth gameplay</p>
+        <div class="detail-box">
+          <strong>Why it matters:</strong>
+          <p>Your internet streams the game like a video. Stable connection = lag-free gaming.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="icon">📱</div>
+        <h3>CloudArcade App</h3>
+        <p style="color: var(--gray);">Available for Android & Windows. <a href="/installguide"> Installation Guide</a></p>
+        <div class="detail-box">
+          <strong>Easy Setup:</strong>
+          <p>Download, install, and start gaming in minutes.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="icon">🔗</div>
+        <h3>ZeroTier App</h3>
+        <p style="color: var(--gray);">Secure network connection. <a href="/installguide"> Installation Guide</a></p>
+        <div class="detail-box">
+          <strong>One-time setup:</strong>
+          <p>Creates a private tunnel to our servers. We'll guide you through it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="background: rgba(0,255,65,0.02); display: none;">
+    <h2>Why Choose Us?</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h3>Instant Play</h3>
+        <p style="color: var(--gray);">No downloads. Start gaming in seconds.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎮</div>
+        <h3>Huge Library</h3>
+        <p style="color: var(--gray);">50+ AAA titles and indie games.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💰</div>
+        <h3>Affordable</h3>
+        <p style="color: var(--gray);">From ₱20/hour. Pay what you need.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📱</div>
+        <h3>Any Device</h3>
+        <p style="color: var(--gray);">Android, Windows, tablets supported.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🚀</div>
+        <h3>60 FPS</h3>
+        <p style="color: var(--gray);">Smooth gameplay on any device.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💻</div>
+        <h3>No Gaming PC</h3>
+        <p style="color: var(--gray);">Play AAA games on low-end devices.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works">
+    <h2>How It Works</h2>
+    <div class="grid">
+      <div class="card" style="text-align: center;">
+        <div class="step-num">1</div>
+        <h3>Download Apps</h3>
+        <p style="color: var(--gray);">Get CloudArcade + ZeroTier apps. <a href="/installguide"> Installation Guide</a></p>
+        <ul style="margin-top: 15px;">
+          <li>Quick installation</li>
+          <li>Step-by-step guide</li>
+          <li>1-minute video setup</li>
+        </ul>
+      </div>
+      
+      <div class="card" style="text-align: center;">
+        <div class="step-num">2</div>
+        <h3>Buy a PIN</h3>
+        <p style="color: var(--gray);">Message us in our <a href="https://www.facebook.com/profile.php?id=61578217256126">Facebook</a>. We will give you PIN. <br> <a href="/installguide"> How to Buy.</a></p>
+        <ul style="margin-top: 15px;">
+          <li>Flexible pricing</li>
+          <li>From ₱20/hour</li>
+          <li>Bonus hours available</li>
+        </ul>
+      </div>
+      
+      <div class="card" style="text-align: center;">
+        <div class="step-num">3</div>
+        <h3>Start Gaming</h3>
+        <p style="color: var(--gray);">Connect and play instantly. <br> <a href="/installguide"> Installation Guide</a></p>
+        <ul style="margin-top: 15px;">
+          <li>Browse game library</li>
+          <li>Click and play</li>
+          <li>24/7 availability</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: rgba(0,255,65,0.02); display: none;">
+    <h2>Our Stats</h2>
+    <div class="stats">
+      <div>
+        <div class="stat-num">10K+</div>
+        <p style="color: var(--gray);">Active Gamers</p>
+      </div>
+      <div>
+        <div class="stat-num">500+</div>
+        <p style="color: var(--gray);">Games</p>
+      </div>
+      <div>
+        <div class="stat-num">1M+</div>
+        <p style="color: var(--gray);">Hours Played</p>
+      </div>
+      <div>
+        <div class="stat-num">24/7</div>
+        <p style="color: var(--gray);">Support</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing Plans</h2>
+    <h3 style="text-align: center;">Message us in our Facebook Page to Buy.</h3>
+    <div class="grid">
+      <div class="card" style="text-align: center;">
+        <h3>Per Hour</h3>
+        <div class="price">₱20</div>
+        <p style="color: var(--gray);">Pay As You Play</p>
+        <div class="badge">Most Flexible</div>
+        <a href="https://www.facebook.com/profile.php?id=61578217256126" class="btn btn-outline" style="margin-top: 20px; width: 100%;">Start Now</a>
+      </div>
+      
+      <div class="card" style="text-align: center;">
+        <h3>Starter</h3>
+        <div class="price">₱99</div>
+        <p style="color: var(--gray);">5 Hours</p>
+        <div class="badge">₱19.80/hr</div>
+        <a href="https://www.facebook.com/profile.php?id=61578217256126" class="btn btn-outline" style="margin-top: 20px; width: 100%;">Get Started</a>
+      </div>
+      
+      <div class="card" style="text-align: center; border-color: var(--green);">
+        <h3>Premium</h3>
+        <div class="price">₱719</div>
+        <p style="color: var(--gray);">45 Hours</p>
+        <div class="badge">₱15.98/hr</div>
+        <a href="https://www.facebook.com/profile.php?id=61578217256126" class="btn" style="margin-top: 20px; width: 100%;">Popular</a>
+      </div>
+      
+      <div class="card" style="text-align: center;">
+        <h3>Legendary</h3>
+        <div class="price">₱3,199</div>
+        <p style="color: var(--gray);">225 Hours</p>
+        <div class="badge">₱14.22/hr</div>
+        <a href="https://www.facebook.com/profile.php?id=61578217256126" class="btn btn-outline" style="margin-top: 20px; width: 100%;">Best Value</a>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="/tier" class="btn">View All Plans</a>
+    </div>
+  </section>
+
+  <section style="background: rgba(0,255,65,0.02); display: none;">
+    <h2>Coming Soon</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">🌐</div>
+        <h3>Static IP</h3>
+        <p style="color: var(--gray);">Faster connections, lower ping</p>
+        <div class="badge badge-outline">In Development</div>
+      </div>
+      <div class="card">
+        <div class="icon">📱</div>
+        <h3>iOS Support</h3>
+        <p style="color: var(--gray);">iPhone & iPad coming soon</p>
+        <div class="badge badge-outline">Coming Soon</div>
+      </div>
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h3>More Servers</h3>
+        <p style="color: var(--gray);">Expanding across Philippines</p>
+        <div class="badge badge-outline">2025</div>
+      </div>
+      <div class="card">
+        <div class="icon">🏆</div>
+        <h3>Tournaments</h3>
+        <p style="color: var(--gray);">Compete and win prizes</p>
+        <div class="badge badge-outline">Coming Soon</div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="footer-grid">
+      <div>
+        <h3>CloudArcade PH</h3>
+        <p style="color: var(--gray); font-size: 14px;">Play anywhere, anytime. Cloud gaming for everyone.</p>
+        <div class="social">
+          <a href="https://www.facebook.com/profile.php?id=61578217256126">f</a>
+          <a href="#">𝕏</a>
+          <a href="#">📷</a>
+          <a href="#">💬</a>
+        </div>
+      </div>
+      <div>
+        <h3>Quick Links</h3>
+        <a href="#">About Us</a>
+        <a href="#">Games</a>
+        <a href="#">Pricing</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div>
+        <h3>Support</h3>
+        <a href="#">Help Center</a>
+        <a href="#">Setup Guide</a>
+        <a href="#">Contact</a>
+        <a href="#">Terms</a>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p style="color: var(--gray); font-size: 14px;">📧 cloudarcadeph@gmail.com</p>
+        <p style="color: var(--gray); font-size: 14px;">📱 +63 906 067 1739</p>
+        <p style="color: var(--gray); font-size: 14px;">🕐 24/7 Support</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 CloudArcade PH. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+    });
+    
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        menuBtn.textContent = '☰';
+      });
+    });
+    
+    // Active navigation highlighting on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinksAll = document.querySelectorAll('.nav-links a');
+    
+    function setActiveNav() {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinksAll.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', setActiveNav);
+    setActiveNav(); // Initial call
+  </script>
+  <script>
+        const miniStrip = document.getElementById('miniCarouselStrip');
+        const miniPrevBtn = document.getElementById('miniPrevBtn');
+        const miniNextBtn = document.getElementById('miniNextBtn');
+        const miniDotNav = document.getElementById('miniDotNav');
+        const miniFullscreenBtn = document.getElementById('miniFullscreenBtn');
+        const miniCarouselBox = document.getElementById('miniCarouselBox');
+        const miniSlides = document.querySelectorAll('.mini-carousel-item');
+        
+        let miniCurrentIndex = 0;
+        let miniIsFullscreen = false;
+
+        // Create dots
+        miniSlides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('mini-nav-dot');
+            if (index === 0) dot.classList.add('mini-dot-active');
+            dot.addEventListener('click', () => miniGoToSlide(index));
+            miniDotNav.appendChild(dot);
+        });
+
+        const miniDots = document.querySelectorAll('.mini-nav-dot');
+
+        function miniUpdateCarousel() {
+            miniStrip.style.transform = `translateX(-${miniCurrentIndex * 100}%)`;
+            miniDots.forEach((dot, index) => {
+                dot.classList.toggle('mini-dot-active', index === miniCurrentIndex);
+            });
+        }
+
+        function miniGoToSlide(index) {
+            miniCurrentIndex = index;
+            miniUpdateCarousel();
+        }
+
+        function miniNextSlide() {
+            miniCurrentIndex = (miniCurrentIndex + 1) % miniSlides.length;
+            miniUpdateCarousel();
+        }
+
+        function miniPrevSlide() {
+            miniCurrentIndex = (miniCurrentIndex - 1 + miniSlides.length) % miniSlides.length;
+            miniUpdateCarousel();
+        }
+
+        function miniToggleFullscreen() {
+            miniIsFullscreen = !miniIsFullscreen;
+            if (miniIsFullscreen) {
+                miniCarouselBox.classList.add('mini-fullscreen-mode');
+                miniFullscreenBtn.textContent = '⊗';
+            } else {
+                miniCarouselBox.classList.remove('mini-fullscreen-mode');
+                miniFullscreenBtn.textContent = '⛶';
+            }
+        }
+
+        miniPrevBtn.addEventListener('click', miniPrevSlide);
+        miniNextBtn.addEventListener('click', miniNextSlide);
+        miniFullscreenBtn.addEventListener('click', miniToggleFullscreen);
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') miniPrevSlide();
+            else if (e.key === 'ArrowRight') miniNextSlide();
+            else if (e.key === 'Escape' && miniIsFullscreen) miniToggleFullscreen();
+            else if ((e.key === 'f' || e.key === 'F') && miniIsFullscreen) miniToggleFullscreen();
+        });
+
+        // Touch swipe
+        let miniTouchStartX = 0;
+        let miniTouchEndX = 0;
+
+        miniStrip.addEventListener('touchstart', (e) => {
+            miniTouchStartX = e.changedTouches[0].screenX;
+        });
+
+        miniStrip.addEventListener('touchend', (e) => {
+            miniTouchEndX = e.changedTouches[0].screenX;
+            if (miniTouchStartX - miniTouchEndX > 50) miniNextSlide();
+            if (miniTouchEndX - miniTouchStartX > 50) miniPrevSlide();
+        });
+
+        /* 
+        TO ADD YOUR IMAGES:
+        Replace placeholder divs with:
+        <img src="your-image.jpg" alt="Description" class="mini-carousel-img">
+        
+        Example:
+        <div class="mini-carousel-item">
+            <img src="screenshot1.jpg" alt="Game Screenshot" class="mini-carousel-img">
+            <div class="mini-slide-count">1/5</div>
+        </div>
+        */
+    </script>
+</body>
+</html>

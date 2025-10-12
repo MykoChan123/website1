@@ -1,0 +1,459 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PIN Receipt</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #000;
+      min-height: 100vh;
+      padding: 20px 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      overflow-y: auto;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 77, 109, 0.3), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .card {
+      width: 375px;
+      height: auto;
+      min-height: 700px;
+      margin: 20px 0;
+      background: #000;
+      border-radius: 30px;
+      box-shadow: 
+        0 20px 60px rgba(57, 255, 20, 0.2),
+        0 0 0 1px rgba(57, 255, 20, 0.3),
+        inset 0 1px 0 rgba(57, 255, 20, 0.1);
+      padding: 50px 25px 30px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 20px;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 30px;
+      padding: 2px;
+      background: linear-gradient(135deg, #39ff14, #00ff88, #39ff14);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    
+    @keyframes shimmer {
+      0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    .card-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      flex: 1;
+    }
+    
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .subtitle {
+      color: #a0aec0;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 25px;
+    }
+    
+    .info {
+      margin: 12px 0;
+      font-size: 16px;
+      color: #cbd5e0;
+      font-weight: 500;
+    }
+    
+    .info strong {
+      color: #fff;
+      font-weight: 700;
+    }
+    
+    .pin-container {
+      margin: 25px 0;
+      padding: 20px 15px;
+      background: linear-gradient(135deg, rgba(57, 255, 20, 0.15), rgba(0, 255, 136, 0.15));
+      border: 2px solid rgba(57, 255, 20, 0.5);
+      border-radius: 15px;
+      position: relative;
+      box-shadow: 
+        0 8px 32px rgba(57, 255, 20, 0.3),
+        inset 0 1px 0 rgba(57, 255, 20, 0.2);
+    }
+    
+    .pin-container::before {
+      content: 'ACCESS CODE';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      padding: 0 15px;
+      font-size: 11px;
+      color: #39ff14;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+    
+    .pin-code {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: #39ff14;
+      letter-spacing: 8px;
+      text-shadow: 
+        0 0 25px rgba(57, 255, 20, 0.9),
+        0 0 50px rgba(57, 255, 20, 0.6),
+        0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    @keyframes glow {
+      from { text-shadow: 0 0 20px rgba(57, 255, 20, 0.8), 0 0 40px rgba(57, 255, 20, 0.5), 0 2px 4px rgba(0, 0, 0, 0.5); }
+      to { text-shadow: 0 0 30px rgba(57, 255, 20, 1), 0 0 60px rgba(57, 255, 20, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5); }
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0;
+      gap: 12px;
+    }
+    
+    .stat-box {
+      flex: 1;
+      padding: 15px 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .stat-label {
+      font-size: 10px;
+      color: #a0aec0;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+    
+    .stat-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+    }
+    
+    .validity {
+      color: #ff4d6d;
+      font-weight: 700;
+    }
+    
+    .message {
+      margin-top: 25px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #cbd5e0;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      padding: 15px;
+      border-radius: 12px;
+      border-left: 4px solid #667eea;
+      text-align: left;
+    }
+    
+    .footer {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 11px;
+      color: #718096;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 0.5px;
+    }
+    
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .btn {
+      font-family: 'Rajdhani', sans-serif;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .btn span {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .btn-print { 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .btn-download { 
+      background: linear-gradient(135deg, #ff4d6d 0%, #c94e6d 100%);
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    @media print {
+      body { 
+        background: #fff; 
+      }
+      body::before {
+        display: none;
+      }
+      .card { 
+        box-shadow: none;
+        background: #fff;
+        color: #000;
+      }
+      .card::before {
+        display: none;
+      }
+      .buttons { 
+        display: none; 
+      }
+      h2 {
+        color: #fff;
+        -webkit-text-fill-color: #fff;
+      }
+      .pin-code {
+        color: #000;
+        text-shadow: none;
+        animation: none;
+      }
+      .info, .message, .stat-label, .stat-value {
+        color: #000;
+      }
+      .stat-box, .message, .pin-container {
+        background: #f7fafc;
+        border-color: #e2e8f0;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .card {
+        padding: 30px 20px;
+      }
+      
+      h2 {
+        font-size: 28px;
+      }
+      
+      .pin-code {
+        font-size: 40px;
+        letter-spacing: 8px;
+      }
+      
+      .stats {
+        flex-direction: column;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="pinCard">
+    <div class="card-content">
+      <h2>CloudArcade PH</h2>
+      <div class="subtitle">Premium Gaming Access</div>
+      
+      <div class="info">
+        <strong>Player:</strong> {{ customer_name or "Guest" }}
+      </div>
+      
+      <div class="pin-container">
+        <div class="pin-code">{{ pin }}</div>
+      </div>
+      
+      <div class="stats">
+        <div class="stat-box">
+          <div class="stat-label">Gameplay Time</div>
+          <div class="stat-value">{{ hours }}h {{ minutes }}m</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Valid For</div>
+          <div class="stat-value validity">{{ duration_days }} Days</div>
+        </div>
+      </div>
+      
+      <div class="message">
+        <strong>🎮 Ready to Play!</strong><br>
+        Your PIN is activated and ready to use on any device. Jump into your favorite games and experience premium gaming with CloudArcade PH. Keep this receipt for your records and game on!
+      </div>
+      
+      <div class="footer">
+        REF: {{ reference }}
+      </div>
+      
+      <div class="buttons">
+        <button class="btn btn-print" onclick="window.print()">
+          <span>🖨️ Print / Save PDF</span>
+        </button>
+        <button class="btn btn-download" onclick="downloadCardAsImage()">
+          <span>📥 Download Image</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function downloadCardAsImage() {
+      // Hide buttons before capturing
+      const buttons = document.querySelector('.buttons');
+      buttons.style.display = 'none';
+      
+      const card = document.getElementById('pinCard');
+      
+      // Force a repaint
+      card.style.transform = 'scale(1)';
+      
+      // Wait for fonts and styles to be ready
+      setTimeout(() => {
+        html2canvas(card, {
+          backgroundColor: '#000000',
+          scale: 3,
+          logging: false,
+          useCORS: true,
+          allowTaint: true,
+          foreignObjectRendering: false,
+          imageTimeout: 0,
+          removeContainer: true,
+          scrollX: 0,
+          scrollY: -window.scrollY,
+          width: card.offsetWidth,
+          height: card.offsetHeight
+        }).then(canvas => {
+          // Create a new canvas with proper dimensions
+          const finalCanvas = document.createElement('canvas');
+          finalCanvas.width = canvas.width;
+          finalCanvas.height = canvas.height;
+          const ctx = finalCanvas.getContext('2d');
+          
+          // Fill black background
+          ctx.fillStyle = '#000000';
+          ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+          
+          // Draw the captured content
+          ctx.drawImage(canvas, 0, 0);
+          
+          const link = document.createElement('a');
+          link.download = 'cloudarcade_pin_receipt.png';
+          link.href = finalCanvas.toDataURL('image/png', 1.0);
+          link.click();
+          
+          // Show buttons again after capture
+          buttons.style.display = 'flex';
+        }).catch(err => {
+          console.error('Error capturing image:', err);
+          buttons.style.display = 'flex';
+        });
+      }, 500);
+    }
+  </script>
+</body>
+</html>
